@@ -146,17 +146,26 @@ string Parser:: get_enclosed(char c)
     return temp;
 }
 
-string Parser::decode_or(int from, int to)
+void Parser::decode_or(stack<pair<State* , State*> > &st,int from , int to)
+{
+    from= from+256;
+    to = to+256;
+    from%=256;
+    to%=256;
+    State *s1 = st.top().first;
+    State *e1 = st.top().second;
+    for(int i = from+1 ; i<=to;i++)
+        s1->addTransition((char)i,e1);
+
+}
+string Parser::enclose_or(int from, int to)
 {
     string temp ="";
     from= from+256;
     to = to+256;
     from%=256;
     to%=256;
-    temp+="("+get_enclosed(from);
-    for(int x =from+1 ; x <= to ; x++)
-        temp+="|" +get_enclosed((char)x);
-    temp+=")";
+    temp+="("+get_enclosed((char)from)+"-"+get_enclosed((char)to)+")";
     return temp;
 }
 string Parser::decode(string line ,int ind)
@@ -201,7 +210,7 @@ string Parser::decode(string line ,int ind)
                 }
             }
             if(last1 == '-'&& last2!= 237)
-                temp+=decode_or(last2,line[i]),last1=237,last2=237;
+                temp+=enclose_or(last2,line[i]),last1=237,last2=237;
             else
             {
                 if(last1 != 237)
@@ -245,13 +254,19 @@ void Parser::evaluate_regex()
         string reg = regexs[i].second;
         stack<char> op;
         stack<pair <State*,State*> > st;
-        char last_op='|';
+        char last_op='|',from,to;
         for(int i = 0 ; i <reg.size();i++)
         {
             if(reg[i]=='\\'&&(i==0 || reg[i-1] !='\\'))
                 continue;
             if((is_reserved_symbol(reg[i]) && i>0 && reg[i-1] =='\\')|| !is_reserved_symbol(reg[i])||reg[i]=='(')
             {
+                if(last_op == '-')
+                {
+                    last_op =(char)237;
+                    to =reg[i];
+                    continue;
+                }
                 if(last_op !='(' && last_op !='|')
                 {
                     while(!op.empty())
@@ -260,7 +275,7 @@ void Parser::evaluate_regex()
                         if(c =='(' || c =='|')
                             break;
                         op.pop();
-                        solve(st,c);
+                        solve(st,c,from,to);
                     }
                     op.push('c');
                 }
@@ -289,8 +304,10 @@ void Parser::evaluate_regex()
                         if(reg[i]=='c' && c == '|')
                             break;
                         op.pop();
-                        solve(st,c);
+                        solve(st,c,from ,to);
                     }
+                    if(reg[i]=='-')
+                        from = last_op;
                 }
                 if(reg[i]!=')')
                     op.push(reg[i]);
@@ -302,7 +319,7 @@ void Parser::evaluate_regex()
         {
             char c = op.top();
             op.pop();
-            solve(st,c);
+            solve(st,c,from,to);
         }
         st.top().second->setAcceptanceState(name);
         start_states.push_back(st.top().first);
@@ -370,7 +387,7 @@ void Parser::or_op(stack<pair<State* , State*> > &st)
     e2->addTransition(Eps,e3);
     st.push(make_pair(s3,e3));
 }
-void Parser::solve(stack<pair<State* , State*> > &st , char c)
+void Parser::solve(stack<pair<State* , State*> > &st , char c,char from , char to)
 {
 
     if(c == 'c')
@@ -379,8 +396,10 @@ void Parser::solve(stack<pair<State* , State*> > &st , char c)
         one_or_more(st);
     else if(c == '*')
         zero_or_more(st);
-    else
+    else if(c =='|')
         or_op(st);
+    else
+        decode_or(st,from,to);
 }
 void Parser::make_one_start()
 {

@@ -36,7 +36,6 @@ int main(){
 
 	NFAtoDFA* converter = NFAtoDFA::getInstance();
 	Automata* DFA = converter->getDFA(NFAmata);
-
 	//DFA->printAutomata();
 
 	while (1);

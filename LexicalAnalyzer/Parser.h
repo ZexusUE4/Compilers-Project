@@ -41,7 +41,7 @@ private:
 
 	/* process line by line and do all needed functionalities */
     void process_line(string s);
-	
+
 	/* read the whole file */
     void read_file();
 
@@ -72,8 +72,10 @@ private:
 	/* get the char preceded by \ if it is a reserved char */
     string get_enclosed(char c);
 
-	/* convert -  to all chars from the first char to the last separated by ors */
-    string decode_or(int from,int to);
+	/* make an automata for - symbol */
+    void decode_or(stack<pair<State* , State*> > &st,int from,int to);
+
+    string enclose_or(int from, int to);
 
 	/* it is used by handle_reg and handle_def to get a simple expression to be used later */
     string decode(string s,int ind);
@@ -102,10 +104,11 @@ private:
     void or_op(stack<pair<State* , State*> > &st);
 
 	/* decide which funciton will be called depending on the operation used*/
-    void solve(stack<pair<State* , State*> > &st, char c);
+    void solve(stack<pair<State* , State*> > &st, char c,char from , char to);
 
 	/* make one start for all automatas */
     void make_one_start();
+
 public:
 
 	/* vector containing delimters to be used later in matching part */
