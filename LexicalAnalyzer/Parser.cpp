@@ -254,7 +254,7 @@ void Parser::evaluate_regex()
         string reg = regexs[i].second;
         stack<char> op;
         stack<pair <State*,State*> > st;
-        char last_op='|',from,to;
+        char last_op='|',from = 0,to = 0;
         for(int i = 0 ; i <reg.size();i++)
         {
             if(reg[i]=='\\'&&(i==0 || reg[i-1] !='\\'))

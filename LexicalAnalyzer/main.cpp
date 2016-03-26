@@ -32,7 +32,7 @@ int main(){
 	NFAStates[9]->addTransition('b', NFAStates[10]);*/
 
 	Automata* NFAmata = Parser::getInstance()->getNFA("test.txt");
-	//NFAmata->printAutomata();
+	NFAmata->printAutomata();
 
 	NFAtoDFA* converter = NFAtoDFA::getInstance();
 	Automata* DFA = converter->getDFA(NFAmata);
