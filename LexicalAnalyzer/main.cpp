@@ -1,8 +1,6 @@
 #include "NFAtoDFA.h"
 #include <iostream>
-#include <string>
 #include <sstream>
-#include <ctime>
 #include "Parser.h"
 using namespace std;
 

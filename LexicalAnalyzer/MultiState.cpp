@@ -4,10 +4,11 @@
 /* initializing the static member allInstances */
 vector<MultiState*> MultiState::allInstances;
 
-MultiState::MultiState(unordered_set<State*> ownedStates){
+MultiState::MultiState(set<State*> ownedStates){
 	this->ownedStates = ownedStates;
 	acceptanceFlag = false;
 	hashValue = 0;
+	size_t pi = 1;
 	priority = (int)1e9;
 
 	for (State* st : ownedStates){
@@ -16,8 +17,9 @@ MultiState::MultiState(unordered_set<State*> ownedStates){
 			priority = st->priority;
 		}
 		hashValue += st->id;
+		pi *= st->id;
 	}
-	hashValue *= ownedStates.size();
+	hashValue += pi;
 
 	allInstances.push_back(this);
 }
@@ -36,7 +38,7 @@ void MultiState::deleteAllInstances(){
 
 MultiState* MultiState::nextState(char transition){
 
-	unordered_set<State*> nextStates;
+	set<State*> nextStates;
 
 	for (State* st : ownedStates){
 
@@ -44,11 +46,11 @@ MultiState* MultiState::nextState(char transition){
 		nextStates.insert(stNextStates.begin(), stNextStates.end());
 	}
 
-	unordered_set<State*> epsClosures;
+	set<State*> epsClosures;
 
 	for (State* st : nextStates){
 
-		unordered_set<State*> epsClosure = st->getEpsilonClosure();
+		set<State*> epsClosure = st->getEpsilonClosure();
 		epsClosures.insert(epsClosure.begin(), epsClosure.end());
 	}
 
@@ -62,7 +64,7 @@ MultiState* MultiState::nextState(char transition){
 
 vector<char> MultiState::getValidTransitions(bool ignoreEps){
 
-	unordered_set<char> transitions;
+	set<char> transitions;
 
 	for (State* st : ownedStates){
 
@@ -88,9 +90,10 @@ bool MultiState::isValidTransition(char transition){
 }
 
 bool MultiState::operator == (const MultiState& rhs) const{
-	return hashValue == rhs.hashValue;
+	return ownedStates == rhs.ownedStates;
 }
 
+//Don't use
 bool MultiState::operator<(const MultiState& rhs) const{
 	return hashValue < rhs.hashValue;
 }

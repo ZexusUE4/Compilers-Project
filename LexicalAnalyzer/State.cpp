@@ -45,9 +45,9 @@ void State::clearTransitions(){
 	transitions.clear();
 }
 
-unordered_set<State*> State::getEpsilonClosure(){
+set<State*> State::getEpsilonClosure(){
 
-	unordered_set<State*> epsClosure;
+	set<State*> epsClosure;
 	epsClosure.insert(this);
 
 	queue<State*> q;

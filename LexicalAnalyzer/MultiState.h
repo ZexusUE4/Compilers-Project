@@ -8,7 +8,7 @@ class MultiState : public StateBase
 private:
 
 	/* a Set containing all States of this MultiState*/
-	unordered_set<State*> ownedStates;
+	set<State*> ownedStates;
 
 	/* Storing references for all instances of MultiState class to be deleted later */
 	static vector<MultiState*> allInstances;
@@ -19,7 +19,7 @@ public:
     size_t hashValue;
 
 	/* MultiState constructor*/
-	MultiState(unordered_set<State*> ownedStates);
+	MultiState(set<State*> ownedStates);
 
 	/* Destructor */
 	~MultiState();

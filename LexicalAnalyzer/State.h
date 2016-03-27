@@ -1,7 +1,5 @@
 #pragma once
 
-#include <unordered_map>
-#include <unordered_set>
 #include <vector>
 #include <string>
 #include "StateBase.h"
@@ -49,7 +47,7 @@ public:
 	void clearTransitions();
 
 	/* Returns the EpsilonClosure of this State */
-	unordered_set<State*> getEpsilonClosure();
+	set<State*> getEpsilonClosure();
 
 	/* Operator < overloading */
 	bool operator<(const State &st) const;

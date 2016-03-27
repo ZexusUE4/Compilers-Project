@@ -1,5 +1,4 @@
 #include "Automata.h"
-#include <set>
 #include <queue>
 #include <iostream>
 
@@ -76,7 +75,7 @@ void Automata::printAutomata(){
 
 size_t Automata::countStates(){
 
-    unordered_set<State*> visited;
+    set<State*> visited;
     queue<State*> q;
     q.push(startState);
     visited.insert(startState);

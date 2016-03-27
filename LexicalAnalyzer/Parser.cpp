@@ -232,13 +232,13 @@ void Parser::create_keywords_states()
 {
     for(string s:keywords)
     {
-        State *start = new State(s,0,p),*temp,*next = new State(s,0,p);
+        State *start = new State(s,0,p),*temp,*next;
         temp = start;
         for(char c:s)
         {
+            next = new State(s,0,p);
             temp->addTransition(c,next);
             temp = next;
-            next = new State(s,0,p);
         }
         temp->setAcceptanceState(s);
         start_states.push_back(start);
