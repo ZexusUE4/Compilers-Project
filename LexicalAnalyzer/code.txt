@@ -1,0 +1,9 @@
+int x , y , ;z ;
+if( wow == x ){
+	//this is comment
+	x = x + 1 ;
+}
+
+while(pass!=10){
+	pass = pass + 1 ;
+}

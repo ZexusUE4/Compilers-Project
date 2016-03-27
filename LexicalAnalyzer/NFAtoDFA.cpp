@@ -17,10 +17,10 @@ Automata* NFAtoDFA::getDFA(Automata* NFA){
 
 	currentNFA = NFA;
 
-    cout << "NFA state count: " << currentNFA->countStates() << endl;
+    //cout << "NFA state count: " << currentNFA->countStates() << endl;
 
 	unminimizedDFA = toDFA(currentNFA);
-    cout << "DFA state count: " << unminimizedDFA->countStates() << endl;
+    //cout << "DFA state count: " << unminimizedDFA->countStates() << endl;
 
 	/***********Testing***********/
 
@@ -71,11 +71,11 @@ Automata* NFAtoDFA::getDFA(Automata* NFA){
 //	minimizedDFA = minimzeDFA(test);
 	/***********End Test***********/
 
-	minimizedDFA = minimzeDFA(unminimizedDFA);
+	//minimizedDFA = minimzeDFA(unminimizedDFA);
 
-    cout << "DFA minimized size= " << minimizedDFA->countStates() << endl;
+    //cout << "DFA minimized size= " << minimizedDFA->countStates() << endl;
 //    return unminimizedDFA;
-	return minimizedDFA;
+	return unminimizedDFA;
 }
 
 Automata* NFAtoDFA::toDFA(Automata* NFA){

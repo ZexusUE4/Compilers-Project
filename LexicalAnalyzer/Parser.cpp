@@ -42,6 +42,9 @@ void Parser::read_file()
 }
 void Parser::process_line(string line)
 {
+    if(line.size()==0)
+        return;
+
     int tol = -1;/* type of line */
     trim(line);
     tol = type_of_line(line);
@@ -249,13 +252,15 @@ void Parser::create_keywords_states()
 
 void Parser::create_delim_states()
 {
-    for(char c:delim)
-    {
-        State *s = new State(""+c,0,p),*en = new State(""+c,1,p);
-        s->addTransition(c,en);
-        start_states.push_back(s);
-        p++;
-    }
+	for (char c : delim)
+	{
+		string str = "";
+		str += c;
+		State *s = new State(str, 0, p), *en = new State(str, 1, p);
+		s->addTransition(c, en);
+		start_states.push_back(s);
+		p++;
+	}
 }
 
 void Parser::evaluate_regex()
