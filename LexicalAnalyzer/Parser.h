@@ -27,6 +27,10 @@ private:
 	/* all regular expressions found in the file */
     vector < pair <string ,string > > regexs;
 
+    /* vector containing delimters to be used later in matching part */
+    vector< char > delim;
+
+
 	/* priority of states according to their order in the file */
     int p =1;
 
@@ -86,6 +90,8 @@ private:
 	/* make an automata for keywords given */
     void create_keywords_states();
 
+    void create_delim_states();
+
 	/* evaluate the expressions to get the automata */
     void evaluate_regex();
 	/* create two states separated by a char */
@@ -109,10 +115,9 @@ private:
 	/* make one start for all automatas */
     void make_one_start();
 
-public:
 
-	/* vector containing delimters to be used later in matching part */
-    vector< char > delim;
+
+public:
 
 	/* Returns the NFA of the given input regex file */
 	Automata* getNFA(string filename);

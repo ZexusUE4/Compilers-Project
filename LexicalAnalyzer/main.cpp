@@ -32,12 +32,10 @@ int main(){
 
 	Automata* NFAmata = Parser::getInstance()->getNFA("test.txt");
 	//NFAmata->printAutomata();
-	cout << "NFA state count: " << NFAmata->countStates() << endl;
 
 	NFAtoDFA* converter = NFAtoDFA::getInstance();
 	Automata* DFA = converter->getDFA(NFAmata);
 
-	cout << "DFA state count: " << DFA->countStates() << endl;
 
 
 	//DFA->printAutomata();'

@@ -28,6 +28,7 @@ Automata* Parser::getNFA(string filename){
 	file.open(filename, ifstream::in);
 	read_file();
 	create_keywords_states();
+    create_delim_states();
 	evaluate_regex();
 	make_one_start();
 	return new Automata(start, ENFA);
@@ -246,6 +247,17 @@ void Parser::create_keywords_states()
     }
 }
 
+void Parser::create_delim_states()
+{
+    for(char c:delim)
+    {
+        State *s = new State(""+c,0,p),*en = new State(""+c,1,p);
+        s->addTransition(c,en);
+        start_states.push_back(s);
+        p++;
+    }
+}
+
 void Parser::evaluate_regex()
 {
     for(int i = 0 ; i <(int) regexs.size();i++)
@@ -401,6 +413,7 @@ void Parser::solve(stack<pair<State* , State*> > &st , char c,char from , char t
     else
         decode_or(st,from,to);
 }
+
 void Parser::make_one_start()
 {
     if(start_states.size()==0)
