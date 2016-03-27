@@ -60,7 +60,7 @@ void Parser::process_line(string line)
 void Parser::trim(string &line)
 {
     int i =0,j = line.size()-1;
-    while(i < line.size() && ( line[i] ==' '|| line[i] =='\t') )
+    while(i < (int)line.size() && ( line[i] ==' '|| line[i] =='\t') )
         i++;
     while(j>=0 && (line[j] == ' ' || line [j] =='\t') )
         j--;
@@ -73,7 +73,7 @@ int Parser::type_of_line(string line)
         return KEYWORD;
     if(line[0] == '[')
         return PUNC;
-    for(int i = 0 ;i  < line.size();i++)
+    for(int i = 0 ;i  < (int)line.size();i++)
     {
         if(line[i] == '=')
             return DEF;
@@ -84,7 +84,7 @@ int Parser::type_of_line(string line)
 }
 void Parser::handle_punc(string line)
 {
-    for(int i = 1 ; i < line.size()-1;i++)
+    for(int i = 1 ; i < (int)line.size()-1;i++)
     {
         if(line[i] == ' ' || line[i] == '\\'|| line[i]=='\t')
             continue;
@@ -94,7 +94,7 @@ void Parser::handle_punc(string line)
 void Parser::handle_keywords(string line)
 {
     int start =-1;
-    for(int i = 1 ; i < line.size();i++)
+    for(int i = 1 ; i < (int)line.size();i++)
     {
         if(line[i] == ' ' || line[i] == '\\' || line[i]=='\t'|| line[i]=='}')
         {
@@ -126,7 +126,7 @@ void Parser::handle_reg(string line)
 int Parser:: get_ind(string line ,char del)
 {
     int i = 0 ;
-    while(i<line.size() && line[i]!=del)
+    while(i< (int)line.size() && line[i]!=del)
         i++;
     return i;
 }
@@ -172,7 +172,7 @@ string Parser::decode(string line ,int ind)
 {
     int last1=237,last2=237;
     string temp ="";
-    for( int i = ind ; i <line.size() ;i++)
+    for( int i = ind ; i < (int)line.size() ;i++)
     {
         if( line[i] == ' '|| line[i] == '\t')
             continue;
@@ -194,7 +194,7 @@ string Parser::decode(string line ,int ind)
             else
             {
                 int j = i+1;
-                while(j<line.size() && (!is_reserved_symbol(line[j]) && line[j]!=' '&& line[j]!='\t'&& line[j]!='\\'))
+                while(j < (int)line.size() && (!is_reserved_symbol(line[j]) && line[j]!=' '&& line[j]!='\t'&& line[j]!='\\'))
                     j++;
                 j--;
                 if(i != j)
@@ -248,14 +248,14 @@ void Parser::create_keywords_states()
 
 void Parser::evaluate_regex()
 {
-    for(int i = 0 ; i <regexs.size();i++)
+    for(int i = 0 ; i <(int) regexs.size();i++)
     {
         string name = regexs[i].first;
         string reg = regexs[i].second;
         stack<char> op;
         stack<pair <State*,State*> > st;
         char last_op='|',from = 0,to = 0;
-        for(int i = 0 ; i <reg.size();i++)
+        for(int i = 0 ; i < (int) reg.size();i++)
         {
             if(reg[i]=='\\'&&(i==0 || reg[i-1] !='\\'))
                 continue;

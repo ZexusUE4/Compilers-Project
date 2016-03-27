@@ -8,15 +8,18 @@ class MultiState : public StateBase
 private:
 
 	/* a Set containing all States of this MultiState*/
-	set<State*> ownedStates;
+	unordered_set<State*> ownedStates;
 
 	/* Storing references for all instances of MultiState class to be deleted later */
 	static vector<MultiState*> allInstances;
 
 public:
 
+    /* Hash value for this multiState */
+    size_t hashValue;
+
 	/* MultiState constructor*/
-	MultiState(set<State*> ownedStates);
+	MultiState(unordered_set<State*> ownedStates);
 
 	/* Destructor */
 	~MultiState();
@@ -42,3 +45,13 @@ public:
 	/* Deletes all instances of this class */
 	static void deleteAllInstances();
 };
+
+namespace std{
+    template<>
+    struct hash<MultiState>
+    {
+        bool operator()(const MultiState& state) const{
+            return state.hashValue;
+        }
+    };
+}

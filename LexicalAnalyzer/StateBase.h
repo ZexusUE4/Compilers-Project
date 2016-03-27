@@ -37,6 +37,9 @@ public:
 	/* Default constructor */
 	StateBase();
 
+	/* Default destructor, virtual since it is a base class */
+	virtual ~StateBase();
+
 	/* Checks if the input char is a valid transition for this State. */
 	virtual bool isValidTransition(char ch) = 0;		//Abstract
 

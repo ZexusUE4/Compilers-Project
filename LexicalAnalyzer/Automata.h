@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 
 #include "StateBase.h"
 #include "State.h"
@@ -42,5 +42,8 @@ public:
 
 	/* Prints all States and transitions inside this Automata*/
 	void printAutomata();
+
+	/* returns the number of states in this automata */
+	size_t countStates();
 
 };

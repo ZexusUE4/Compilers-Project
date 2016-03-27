@@ -45,9 +45,9 @@ void State::clearTransitions(){
 	transitions.clear();
 }
 
-set<State*> State::getEpsilonClosure(){
+unordered_set<State*> State::getEpsilonClosure(){
 
-	set<State*> epsClosure;
+	unordered_set<State*> epsClosure;
 	epsClosure.insert(this);
 
 	queue<State*> q;
@@ -101,7 +101,7 @@ void State::printState(bool detailed){
 
 			cout << validTransitions[i];
 
-			if (i + 1 != validTransitions.size()){
+			if (i + 1 != (int)validTransitions.size()){
 				cout << ", ";
 			}
 		}

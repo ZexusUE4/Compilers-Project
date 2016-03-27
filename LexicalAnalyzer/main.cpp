@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <ctime>
 #include "Parser.h"
 using namespace std;
 
@@ -32,11 +33,14 @@ int main(){
 	NFAStates[9]->addTransition('b', NFAStates[10]);*/
 
 	Automata* NFAmata = Parser::getInstance()->getNFA("test.txt");
-	NFAmata->printAutomata();
+	//NFAmata->printAutomata();
+	cout << "NFA state count: " << NFAmata->countStates() << endl;
 
 	NFAtoDFA* converter = NFAtoDFA::getInstance();
 	Automata* DFA = converter->getDFA(NFAmata);
-	//DFA->printAutomata();
 
-	while (1);
+	cout << "DFA state count: " << DFA->countStates() << endl;
+
+
+	//DFA->printAutomata();'
 }

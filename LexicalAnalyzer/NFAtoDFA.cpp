@@ -26,7 +26,7 @@ Automata* NFAtoDFA::toDFA(Automata* NFA){
 	if (NFA->automataType != ENFA)
 		return NULL;
 
-	map<MultiState, State*> multiMap;
+	unordered_map<MultiState, State*> multiMap;
 	queue<MultiState*> statesQueue;
 	State* NFAStart = NFA->startState;
 

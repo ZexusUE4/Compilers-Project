@@ -4,17 +4,20 @@
 /* initializing the static member allInstances */
 vector<MultiState*> MultiState::allInstances;
 
-MultiState::MultiState(set<State*> ownedStates){
+MultiState::MultiState(unordered_set<State*> ownedStates){
 	this->ownedStates = ownedStates;
 	acceptanceFlag = false;
+	hashValue = 0;
+	priority = (int)1e9;
 
-	priority = 1e9;
 	for (State* st : ownedStates){
 		if (st->isAcceptanceState() && priority > st->priority){
 			setAcceptanceState(st->name);
 			priority = st->priority;
 		}
+		hashValue += st->id;
 	}
+	hashValue *= ownedStates.size();
 
 	allInstances.push_back(this);
 }
@@ -33,7 +36,7 @@ void MultiState::deleteAllInstances(){
 
 MultiState* MultiState::nextState(char transition){
 
-	set<State*> nextStates;
+	unordered_set<State*> nextStates;
 
 	for (State* st : ownedStates){
 
@@ -41,11 +44,11 @@ MultiState* MultiState::nextState(char transition){
 		nextStates.insert(stNextStates.begin(), stNextStates.end());
 	}
 
-	set<State*> epsClosures;
+	unordered_set<State*> epsClosures;
 
 	for (State* st : nextStates){
 
-		set<State*> epsClosure = st->getEpsilonClosure();
+		unordered_set<State*> epsClosure = st->getEpsilonClosure();
 		epsClosures.insert(epsClosure.begin(), epsClosure.end());
 	}
 
@@ -59,7 +62,7 @@ MultiState* MultiState::nextState(char transition){
 
 vector<char> MultiState::getValidTransitions(bool ignoreEps){
 
-	set<char> transitions;
+	unordered_set<char> transitions;
 
 	for (State* st : ownedStates){
 
@@ -85,11 +88,11 @@ bool MultiState::isValidTransition(char transition){
 }
 
 bool MultiState::operator == (const MultiState& rhs) const{
-	return ownedStates == rhs.ownedStates;
+	return hashValue == rhs.hashValue;
 }
 
 bool MultiState::operator<(const MultiState& rhs) const{
-	return ownedStates < rhs.ownedStates;
+	return hashValue < rhs.hashValue;
 }
 
 void MultiState::printState(bool detailed){
@@ -97,14 +100,13 @@ void MultiState::printState(bool detailed){
 	cout << "MultiState ids: {";
 
 	for (auto it = ownedStates.begin(); it != ownedStates.end(); it++){
+
+        if(it != ownedStates.begin())
+                cout << ", ";
+
 		State* st = *it;
 		cout << st->id;
 
-		it++;
-		if (it != ownedStates.end()){
-			cout << ", ";
-		}
-		it--;
 	}
 	cout << "}, ";
 
@@ -112,14 +114,10 @@ void MultiState::printState(bool detailed){
 		cout << "MultiState names: {";
 
 		for (auto it = ownedStates.begin(); it != ownedStates.end(); it++){
+
+
 			State* st = *it;
 			cout << st->name;
-
-			it++;
-			if (it != ownedStates.end()){
-				cout << ", ";
-			}
-			it--;
 		}
 		cout << "}, ";
 
@@ -133,7 +131,7 @@ void MultiState::printState(bool detailed){
 
 			cout << validTransitions[i];
 
-			if (i + 1 != validTransitions.size()){
+			if (i + 1 != (int)validTransitions.size()){
 				cout << ", ";
 			}
 		}
