@@ -1,6 +1,8 @@
 #include "Automata.h"
 #include <queue>
 #include <iostream>
+#include <fstream>
+#include <sstream>
 
 Automata::Automata(){
 
@@ -139,3 +141,90 @@ vector<char> Automata::getAllTransitions(){
 
     return vector<char>(allTransitions.begin(),allTransitions.end());
 }
+
+void Automata::printTransitionTable(string fileName){
+    streambuf *backup;
+    backup = std::cout.rdbuf();     // back up cout's streambuf
+    std::ofstream out;
+
+    if(fileName != "STDOUT"){
+        out.open(fileName);
+        std::streambuf *coutbuf = std::cout.rdbuf(); //save old buf
+        std::cout.rdbuf(out.rdbuf()); //redirect std::cout to out.txt
+    }
+
+
+    vector<State*> allStates = getAllStates();
+    vector<char> allTransitions = getAllTransitions();
+
+    string stId = "--------------";
+    string colSep = "--------";
+    string accNameSep = "------------";
+
+    cout << stId;
+    cout << accNameSep;
+        //      State id
+    for(char c: allTransitions){
+        cout << colSep;
+    }
+    cout << endl;
+    cout << "   State id   ";
+    cout << "| Acceptance ";
+
+    for(char c: allTransitions){
+        cout << "|   " << c << "   ";
+    }
+    cout << endl;
+
+    for(State* st: allStates){
+        cout << stId;
+        cout << accNameSep;
+        for(int i = 0;i < allTransitions.size();i++){
+            cout << colSep;
+        }
+        cout << endl;
+
+        string stateId = num2str(st->id);
+        int remSpaces = stId.size() - stateId.size() - 1;
+        cout << " " << stateId;
+        while(remSpaces--)
+            cout << " ";
+
+        string acc = "           ";
+        if(st->isAcceptanceState())
+            acc = st->name;
+
+        remSpaces = accNameSep.size() - acc.size() - 1;
+        cout << "| " << acc;
+
+        while(remSpaces--)
+            cout << " ";
+
+        for(char c: allTransitions){
+            if(st->isValidTransition(c)){
+                string stId = num2str(st->nextState(c)->id);
+                cout << "| ";
+                int remSeps = colSep.size() - stId.size() - 2;
+                cout << stId;
+                while(remSeps--)
+                    cout << " ";
+            }
+            else{
+                cout << "|   -   ";
+            }
+        }
+        cout << endl;
+    }
+
+    if(fileName != "STDOUT"){
+        std::cout.rdbuf(backup);
+        out.close();
+    }
+}
+
+string Automata::num2str ( int Number )
+  {
+     ostringstream ss;
+     ss << Number;
+     return ss.str();
+  }

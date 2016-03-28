@@ -17,6 +17,7 @@ class Automata
 {
 private:
 
+    string num2str ( int Number );
 
 public:
 
@@ -40,6 +41,7 @@ public:
 	/* Automata constructor */
 	Automata(State* startState, EAutomataType Type);
 
+    /* Returns a vector containing all states in this Automata */
 	vector<State*> getAllStates();
 
 	vector<char> getAllTransitions();
@@ -49,5 +51,8 @@ public:
 
 	/* returns the number of states in this automata */
 	size_t countStates();
+
+	/*Prints the transition table */
+	void printTransitionTable(string fileName = "STDOUT");
 
 };
