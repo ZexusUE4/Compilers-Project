@@ -105,6 +105,11 @@ char analyzer::read_char()
     return comp_f_stream.get();
 }
 
+char analyzer::peek_char()
+{
+    return comp_f_stream.peek();
+}
+
 void analyzer::restore_char()
 {
     restore_char(1);
@@ -122,11 +127,15 @@ void analyzer::restore_pos()
 
 void analyzer::drop_garbage()
 {
+    if( peek_char() == EOF )return ;
     while(true){
         char c = read_char();
-        if( c == EOF )break ;
         if( !isspace(c) ){
             if( c == '/' ){
+                if( peek_char() == EOF ){
+                    restore_char();
+                    return ;
+                }
                 char cc = read_char();
                 if( cc == '/' ){//drop until new line is found
                     while(true){
@@ -177,7 +186,7 @@ token analyzer::getToken()
     refresh();
     drop_garbage();
 
-    if( comp_f_stream.peek() == EOF )
+    if( peek_char() == EOF )
         return token("END_OF_FILE","") ;
 
     int first_pos = comp_f_stream.tellg();

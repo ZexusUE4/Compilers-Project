@@ -30,6 +30,7 @@ class analyzer
         token fix_error( token err_t );                /* Try to fix the token to match the DFA */
         void refresh();                                /* Refresh states to look for new token */
         char read_char();                              /* Get one character from the stream */
+        char peek_char();                              /* Peek one character from the stream */
         void restore_char();                           /* Move one position back into stream */
         void restore_char( int n );                    /* Move n positions back into stream */
         void restore_pos();                            /* Seek to position of last acceptance in stream */
