@@ -17,10 +17,7 @@ Automata* NFAtoDFA::getDFA(Automata* NFA){
 
 	currentNFA = NFA;
 
-    //cout << "NFA state count: " << currentNFA->countStates() << endl;
-
 	unminimizedDFA = toDFA(currentNFA);
-    //cout << "DFA state count: " << unminimizedDFA->countStates() << endl;
 
 	/***********Testing***********/
 
@@ -65,17 +62,15 @@ Automata* NFAtoDFA::getDFA(Automata* NFA){
 //	s3->addTransition('d', s8);
 //	s4->addTransition('b', s5);
 //	s5->addTransition('c', s6);
-//	s6->addTransition('b', s7);
+//	s6->addTransition('d', s7);
 //
 //	Automata* test= new Automata(s1, EDFA);
 //	minimizedDFA = minimzeDFA(test);
 	/***********End Test***********/
 
-	//minimizedDFA = minimzeDFA(unminimizedDFA);
+	minimizedDFA = minimzeDFA(unminimizedDFA);
 
-    //cout << "DFA minimized size= " << minimizedDFA->countStates() << endl;
-//    return unminimizedDFA;
-	return unminimizedDFA;
+	return minimizedDFA;
 }
 
 Automata* NFAtoDFA::toDFA(Automata* NFA){
@@ -120,75 +115,35 @@ Automata* NFAtoDFA::toDFA(Automata* NFA){
 
 Automata* NFAtoDFA::minimzeDFA(Automata* DFA){
 
-	vector< set<State*> > current_state_sets[2];	// Holding the sets of the states.
-	State* start_state= DFA->startState;
-	vector<char> possible_input;
-
+    vector<char> possible_input = DFA->getAllTransitions();
 	set<State*> accepting_states;
 	set<State*> non_accepting_states;
+    vector <State*> visited = DFA->getAllStates();
 
-	// Traversing and retrieving the graph states (BFS).
-	queue <State*> states_queue;
-	set <State*> visited;
+    vector< set<State*> > current_state_sets[2];	// Holding the sets of the states.
 
-	states_queue.push(start_state);
-	visited.insert(start_state);
-	non_accepting_states.insert(start_state);
-
-	set<char> symbols; // To collect the input characters.
-
-	while(!states_queue.empty()){
-		State* current_state= states_queue.front();	states_queue.pop();
-		vector<char> c= current_state->getValidTransitions();
-		for(int i= 0; i< (int)c.size(); i++){
-			symbols.insert(c[i]);
-			State* neighbour;
-			neighbour= current_state->nextState(c[i]);
-			if(visited.find(neighbour) == visited.end()){	// Not visited before.
-				visited.insert(neighbour);
-				states_queue.push(neighbour);
-				if(neighbour->isAcceptanceState()) accepting_states.insert(neighbour);
-				else non_accepting_states.insert(neighbour);
-			}
-		}
-	}
-	/**************************************************************************************/
-
-	// Moving the data from the set to the vector.
-	set<char>::iterator it;
-	int ind= 0;
-	for(it= symbols.begin(); it!= symbols.end(); it++){
-		possible_input.push_back(*it);
-//		cout << (char)(*it) << endl; // Printing the input characters.
+	for(State * st:visited){
+        if(st->isAcceptanceState()){
+            accepting_states.insert(st);
+        }
+        else{
+            non_accepting_states.insert(st);
+        }
 	}
 
 	current_state_sets[0].push_back(non_accepting_states);
 
-	/**************************************************************************************/
 	// Dividing the accepting states into different accepting states according to their type.
 	map<string, set<State*> > states_types;
-	set<State*>::iterator accepting_state_it;
-	for(accepting_state_it= accepting_states.begin(); accepting_state_it!= accepting_states.end(); ++accepting_state_it){
-		states_types[(*accepting_state_it)->name].insert((*accepting_state_it));
+
+	for(State* acc_state : accepting_states){
+		states_types[acc_state->name].insert(acc_state);
 	}
 
-	map<string, set<State*> >::iterator states_type_it;
-	for(states_type_it= states_types.begin(); states_type_it!= states_types.end(); ++states_type_it){
+	for(auto states_type_it = states_types.begin(); states_type_it != states_types.end(); ++states_type_it){
 		current_state_sets[0].push_back(states_type_it->second);
 	}
 
-	// Debugging
-//	for(int i= 0; i< (int)current_state_sets[0].size(); i++){
-//		set<State*>::iterator it;
-//		cout << "Set: ";
-//		for(it= current_state_sets[0][i].begin(); it!=current_state_sets[0][i].end(); it++){
-//			cout << (*it)->name << " ";
-//		}
-//		cout << endl;
-//	}
-
-
-	/**************************************************************************************/
 	// Continuously checking for minimized sets.
 	int flip= 0;
 
@@ -196,49 +151,57 @@ Automata* NFAtoDFA::minimzeDFA(Automata* DFA){
 
 		// Iterating on each set.
 		for(int i= 0; i< (int)current_state_sets[flip].size(); i++){
-			set<State*>::iterator elem_it;
 			map < vector<int>, set<State*> > brackets; // Holds the transition of each element in the current set, and collect them together.
 
 			// Iterating on each element in the current set.
-			for(elem_it= current_state_sets[flip][i].begin(); elem_it!= current_state_sets[flip][i].end(); ++elem_it){
+			for(State* st : current_state_sets[flip][i]){
 				vector<int> current_set_neighbours;
-
 				// Trying all possible inputs for the current state.
-				for(int j= 0; j< (int)possible_input.size(); ++j){
-					current_set_neighbours.push_back(getSetNumber((*elem_it)->nextState(possible_input[j]), current_state_sets[flip]));
+				for(char c : possible_input){
+                    current_set_neighbours.push_back(getSetNumber(st->nextState(c), current_state_sets[flip]));
 				}
-				brackets[current_set_neighbours].insert(*elem_it); 	// Check for how to insert an iterator ?
+				brackets[current_set_neighbours].insert(st);
 			}
+
 			// Dividing the current set into multiple sets.
-			map < vector<int>, set<State*> >::iterator brackets_it;
-			for(brackets_it= brackets.begin(); brackets_it!= brackets.end(); ++brackets_it)
-				current_state_sets[(flip+1)%2].push_back(brackets_it->second);
+			for(auto brackets_it= brackets.begin(); brackets_it!= brackets.end(); ++brackets_it)
+				current_state_sets[flip^1].push_back(brackets_it->second);
 		}
-		flip++;
-		flip%= 2;
-		if(current_state_sets[0].size() == current_state_sets[1].size()) break;
-		current_state_sets[(flip+1)%2].clear();
+		flip^=1;
+
+		if(current_state_sets[0].size() == current_state_sets[1].size())
+            break;
+
+        current_state_sets[flip^1].clear();
 	}
 
-	/*********************************************************************************************/
 	// Creating a state of each set.
 	vector<State*> new_DFA_states((int)current_state_sets[0].size());
-	for(int i= 0; i< (int)current_state_sets[0].size(); ++i){
-		set<State*>::iterator first_elem= current_state_sets[0][i].begin();
+
+	for(int i= 0; i < (int)current_state_sets[0].size(); ++i){
+
+		auto first_elem = current_state_sets[0][i].begin();
 		string name= (*first_elem)->name;
+
 		bool acceptance= (*first_elem)->isAcceptanceState();
 		int priority= (*first_elem)->priority;
+
 		new_DFA_states[i]= new State(name, acceptance, priority);
 	}
 
+    int new_starting_state= getSetNumber(DFA->startState, current_state_sets[0]);
+
 	// Converting into a DFA.
-	Automata* minDFA= new Automata(new_DFA_states[0], EDFA);
+	Automata* minDFA= new Automata(new_DFA_states[new_starting_state], EMDFA);
+
 	for(int i= 0; i< (int)current_state_sets[0].size(); ++i){
-		set<State*>::iterator first_elem= current_state_sets[0][i].begin();
-		for(int j= 0; j< (int)possible_input.size(); ++j){
-			if((*first_elem)->isValidTransition(possible_input[j])){
-				int next_state_number= getSetNumber((*first_elem)->nextState(possible_input[j]), current_state_sets[0]);
-				new_DFA_states[i]->addTransition(possible_input[j], new_DFA_states[next_state_number]);
+
+		auto first_elem= current_state_sets[0][i].begin();
+
+		for(char c : possible_input){
+			if((*first_elem)->isValidTransition(c)){
+				int next_state_number= getSetNumber((*first_elem)->nextState(c), current_state_sets[0]);
+				new_DFA_states[i]->addTransition(c, new_DFA_states[next_state_number]);
 			}
 		}
 	}
@@ -246,7 +209,7 @@ Automata* NFAtoDFA::minimzeDFA(Automata* DFA){
 	return minDFA;
 }
 
-int NFAtoDFA::getSetNumber(State* s, vector< set<State*> > v){
+int NFAtoDFA::getSetNumber(State* s, vector< set<State*> >& v){
 	if(s == NULL) return -1;
 	for(int i= 0; i< v.size(); ++i){
 		if(v[i].find(s) != v[i].end()) return i;

@@ -7,13 +7,14 @@ class MultiState : public StateBase
 
 private:
 
-	/* a Set containing all States of this MultiState*/
-	set<State*> ownedStates;
-
 	/* Storing references for all instances of MultiState class to be deleted later */
 	static vector<MultiState*> allInstances;
 
 public:
+
+
+    /* a Set containing all States of this MultiState*/
+	set<State*> ownedStates;
 
     /* Hash value for this multiState */
     size_t hashValue;

@@ -17,7 +17,7 @@ private:
 	/* Singelton instance of this class */
 	static NFAtoDFA* instance;
 
-	int getSetNumber(State* s, vector< set<State*> > v);
+	int getSetNumber(State* s, vector< set<State*> >& v);
 
 public:
 

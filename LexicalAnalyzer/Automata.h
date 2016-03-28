@@ -40,6 +40,10 @@ public:
 	/* Automata constructor */
 	Automata(State* startState, EAutomataType Type);
 
+	vector<State*> getAllStates();
+
+	vector<char> getAllTransitions();
+
 	/* Prints all States and transitions inside this Automata*/
 	void printAutomata();
 

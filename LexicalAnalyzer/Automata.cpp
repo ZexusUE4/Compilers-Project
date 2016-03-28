@@ -98,3 +98,44 @@ size_t Automata::countStates(){
 
     return visited.size();
 }
+
+vector<State*> Automata::getAllStates(){
+
+    set<State*> visited;
+    queue<State*> q;
+    q.push(startState);
+    visited.insert(startState);
+
+    while(!q.empty()){
+        State* top = q.front(); q.pop();
+        vector<char> validTransitions = top->getValidTransitions();
+
+        for(char c : validTransitions){
+            vector<State*> nextStates = top->nextStates(c);
+
+            for(State* st: nextStates){
+                if(visited.find(st) == visited.end()){
+                    visited.insert(st);
+                    q.push(st);
+                }
+            }
+        }
+    }
+
+    return vector<State*>(visited.begin(),visited.end());
+
+}
+
+vector<char> Automata::getAllTransitions(){
+
+    set<char> allTransitions;
+
+    vector<State*> allStates = getAllStates();
+
+    for(State * st: allStates){
+        vector<char> validTransitions = st->getValidTransitions();
+        allTransitions.insert(validTransitions.begin(),validTransitions.end());
+    }
+
+    return vector<char>(allTransitions.begin(),allTransitions.end());
+}

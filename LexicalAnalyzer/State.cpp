@@ -77,7 +77,7 @@ vector<char> State::getValidTransitions(bool ignoreEps){
 
 	for (auto it = transitions.begin(); it != transitions.end(); it++){
 
-		if (ignoreEps && it->first == Eps)
+		if ((ignoreEps && it->first == Eps) || (it->second).size() == 0)
 			continue;
 
 		validTransitions.push_back(it->first);
