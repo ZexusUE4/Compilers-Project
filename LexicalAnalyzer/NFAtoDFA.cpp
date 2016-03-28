@@ -22,6 +22,7 @@ Automata* NFAtoDFA::getDFA(Automata* NFA){
 	//cout << unminimizedDFA->countStates() << endl;
 
 	minimizedDFA = minimzeDFA(unminimizedDFA);
+	minimizedDFA->printAutomata();
 
     //cout << minimizedDFA->countStates() << endl;
 
