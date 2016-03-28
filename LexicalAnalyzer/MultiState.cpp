@@ -95,7 +95,7 @@ bool MultiState::operator == (const MultiState& rhs) const{
 
 //Don't use
 bool MultiState::operator<(const MultiState& rhs) const{
-	return hashValue < rhs.hashValue;
+	return ownedStates < rhs.ownedStates;
 }
 
 void MultiState::printState(bool detailed){

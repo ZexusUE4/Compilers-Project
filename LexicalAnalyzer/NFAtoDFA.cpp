@@ -19,56 +19,11 @@ Automata* NFAtoDFA::getDFA(Automata* NFA){
 
 	unminimizedDFA = toDFA(currentNFA);
 
-	/***********Testing***********/
-
-	//Test1
-//	State* s1= new State("1", 0, -1);
-//	State* s2= new State("4", 1, -1);
-//	State* s3= new State("3", 0, -1);
-//	State* s4= new State("4", 1, -1);
-//	State* s5= new State("4", 1, -1);
-//	State* s6= new State("4", 1, -1);
-//	State* s7= new State("4", 1, -1);
-//	State* s8= new State("4", 1, -1);
-//
-//	s1->addTransition('0', s2);
-//	s2->addTransition('0', s3);
-//	s2->addTransition('1', s4);
-//	s3->addTransition('0', s5);
-//	s3->addTransition('1', s3);
-//	s4->addTransition('0', s6);
-//	s4->addTransition('1', s3);
-//	s5->addTransition('1', s7);
-//	s6->addTransition('0', s8);
-//	s6->addTransition('1', s4);
-//	s7->addTransition('0', s6);
-//	s7->addTransition('1', s3);
-//	s8->addTransition('0', s5);
-//	s8->addTransition('1', s4);
-
-	//Test2
-//	State* s1= new State("1", 0, -1);
-//	State* s2= new State("2", 0, -1);
-//	State* s3= new State("3", 0, -1);
-//	State* s4= new State("4", 0, -1);
-//	State* s5= new State("5", 0, -1);
-//	State* s6= new State("6", 0, -1);
-//	State* s7= new State("7", 1, -1);
-//	State* s8= new State("7", 1, -1);
-//
-//	s1->addTransition('a', s4);
-//	s1->addTransition('b', s2);
-//	s2->addTransition('c', s3);
-//	s3->addTransition('d', s8);
-//	s4->addTransition('b', s5);
-//	s5->addTransition('c', s6);
-//	s6->addTransition('d', s7);
-//
-//	Automata* test= new Automata(s1, EDFA);
-//	minimizedDFA = minimzeDFA(test);
-	/***********End Test***********/
+	//cout << unminimizedDFA->countStates() << endl;
 
 	minimizedDFA = minimzeDFA(unminimizedDFA);
+
+    //cout << minimizedDFA->countStates() << endl;
 
 	return minimizedDFA;
 }
