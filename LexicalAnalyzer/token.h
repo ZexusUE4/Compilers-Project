@@ -10,8 +10,8 @@ class token
     public:
         token( string type , string value );
 
-        string getType();
-        string getValue();
+        string get_type();
+        string get_value();
     private:
         /* The type of the token */
         string type ;

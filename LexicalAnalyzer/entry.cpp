@@ -7,8 +7,8 @@ entry::entry()
 
 entry::entry( string lexeme , string type )
 {
-    setLexeme(lexeme);
-    setType(type);
+    set_lexeme(lexeme);
+    set_type(type);
 }
 
 entry::~entry()
@@ -16,43 +16,43 @@ entry::~entry()
     extra.clear();
 }
 
-void entry::setLexeme( string lex )
+void entry::set_lexeme( string lex )
 {
     lexeme = lex ;
 }
 
-void entry::setType( string typ )
+void entry::set_type( string typ )
 {
     type = typ ;
 }
 
-void entry::setInfo( string inf )
+void entry::set_info( string inf )
 {
     info = inf ;
 }
 
-void entry::addExtraValue( string val )
+void entry::add_extra_value( string val )
 {
     extra.push_back(val);
 }
 
-string entry::getExtra( int pos )
+string entry::get_extra( int pos )
 {
     if( pos >= extra.size() )return "NOT_OCCUPIED";
     return extra[pos];
 }
 
-string entry::getInfo()
+string entry::get_info()
 {
     return info ;
 }
 
-string entry::getLexeme()
+string entry::get_lexeme()
 {
     return lexeme ;
 }
 
-string entry::getType()
+string entry::get_type()
 {
     return type ;
 }

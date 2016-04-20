@@ -2,53 +2,53 @@
 
 #include <vector>
 #include <string>
-#include "StateBase.h"
+#include "state_base.h"
 
 using namespace std;
 
-class State : public StateBase
+class state : public state_base
 {
 
 private:
 
 	/* Map containing all the transitions from this State */
-	map<char, vector<State*> > transitions;
+	map<char, vector<state*> > transitions;
 
 public:
     /* Dummy used for or */
-	bool isDummy;
+	bool is_dummy;
 
 
 	/* State constructor */
-	State(string name = "", bool isAcceptance = false, int priority = -1,bool isDummy = false);
+	state(string name = "", bool isAcceptance = false, int priority = -1,bool is_dummy = false);
 
 	/* Destructor. It deletes all States that this State goes to*/
-	~State();
+	~state();
 
 	/* Checks if the input char is a valid transition for this State. */
-	bool isValidTransition(char ch) override;
+	bool is_valid_transition(char ch) override;
 
 	/* Returns the next State if it was valid else it returns this State. */
-	State* nextState(char transition) override;
+	state* next_state(char transition) override;
 
 	/* Returns a vector containing all valid transitions from this State*/
-	vector<char> getValidTransitions(bool ignoreEps = false) override;
+	vector<char> get_valid_transtitions(bool ignoreEps = false) override;
 
 	/* Prints the id of the state by default, also prints transitions, acceptanceFlag and name if detailed is set to true */
-	void printState(bool detailed = false) override;
+	void print_state(bool detailed = false) override;
 
 	/* Returns a vector containing next States if it was valid transition else it returns a vector containing this State. */
-	vector<State*> nextStates(char transition);
+	vector<state*> next_states(char transition);
 
-	/* Adds a transition from this State to nextState using transitionChar. */
-	void addTransition(char transitionChar, State* nextState);
+	/* Adds a transition from this State to next_state using transitionChar. */
+	void add_transiton(char transitionChar, state* next_state);
 
 	/* Removes all transitions from this State */
-	void clearTransitions();
+	void clear_transitions();
 
 	/* Returns the EpsilonClosure of this State */
-	set<State*> getEpsilonClosure();
+	set<state*> get_epsilon_closure();
 
 	/* Operator < overloading */
-	bool operator<(const State &st) const;
+	bool operator<(const state &st) const;
 };

@@ -6,12 +6,12 @@ token::token( string type , string value )
     this->value = value ;
 }
 
-string token::getType()
+string token::get_type()
 {
     return type ;
 }
 
-string token::getValue()
+string token::get_value()
 {
     return value ;
 }

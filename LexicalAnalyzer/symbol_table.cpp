@@ -22,7 +22,7 @@ entry symbol_table::get( string lexeme )
 
 bool symbol_table::exists( string lexeme )
 {
-    table.count(lexeme) != 0 ;
+    return table.count(lexeme) != 0 ;
 }
 
 entry& symbol_table::operator[]( const string& lexeme)

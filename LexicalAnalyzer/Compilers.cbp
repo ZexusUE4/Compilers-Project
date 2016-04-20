@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Compilers" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Option virtualFolders="Lexical Analyzer\;Lexical Analyzer\;Lexical Analyzer\;Lexical Analyzer\Sources\;Lexical Analyzer\;Lexical Analyzer\;Lexical Analyzer\Headers\;Compiler\Sources\;Compiler\Header\;Parser\;Parser\Headers\;Parser\Source\;" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/Compilers" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add directory="include" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/Compilers" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add directory="include" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="analyzer.cpp">
+			<Option virtualFolder="Lexical Analyzer/Sources/" />
+		</Unit>
+		<Unit filename="analyzer.h">
+			<Option virtualFolder="Lexical Analyzer/Headers/" />
+		</Unit>
+		<Unit filename="automata.cpp">
+			<Option virtualFolder="Lexical Analyzer/Sources/" />
+		</Unit>
+		<Unit filename="automata.h">
+			<Option virtualFolder="Lexical Analyzer/Headers/" />
+		</Unit>
+		<Unit filename="compiler.cpp">
+			<Option virtualFolder="Compiler/Sources/" />
+		</Unit>
+		<Unit filename="compiler.h">
+			<Option virtualFolder="Compiler/Header/" />
+		</Unit>
+		<Unit filename="entry.cpp">
+			<Option virtualFolder="Lexical Analyzer/Sources/" />
+		</Unit>
+		<Unit filename="entry.h">
+			<Option virtualFolder="Lexical Analyzer/Headers/" />
+		</Unit>
+		<Unit filename="main.cpp">
+			<Option virtualFolder="Compiler/Sources/" />
+		</Unit>
+		<Unit filename="multi_state.cpp">
+			<Option virtualFolder="Lexical Analyzer/Sources/" />
+		</Unit>
+		<Unit filename="multi_state.h">
+			<Option virtualFolder="Lexical Analyzer/Headers/" />
+		</Unit>
+		<Unit filename="nfa_to_dfa.cpp">
+			<Option virtualFolder="Lexical Analyzer/Sources/" />
+		</Unit>
+		<Unit filename="nfa_to_dfa.h">
+			<Option virtualFolder="Lexical Analyzer/Headers/" />
+		</Unit>
+		<Unit filename="regex_reader.cpp">
+			<Option virtualFolder="Lexical Analyzer/Sources/" />
+		</Unit>
+		<Unit filename="regex_reader.h">
+			<Option virtualFolder="Lexical Analyzer/Headers/" />
+		</Unit>
+		<Unit filename="state.cpp">
+			<Option virtualFolder="Lexical Analyzer/Sources/" />
+		</Unit>
+		<Unit filename="state.h">
+			<Option virtualFolder="Lexical Analyzer/Headers/" />
+		</Unit>
+		<Unit filename="state_base.cpp">
+			<Option virtualFolder="Lexical Analyzer/Sources/" />
+		</Unit>
+		<Unit filename="state_base.h">
+			<Option virtualFolder="Lexical Analyzer/Headers/" />
+		</Unit>
+		<Unit filename="symbol_table.cpp">
+			<Option virtualFolder="Compiler/Sources/" />
+		</Unit>
+		<Unit filename="symbol_table.h">
+			<Option virtualFolder="Compiler/Header/" />
+		</Unit>
+		<Unit filename="token.cpp">
+			<Option virtualFolder="Lexical Analyzer/Sources/" />
+		</Unit>
+		<Unit filename="token.h">
+			<Option virtualFolder="Lexical Analyzer/Headers/" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

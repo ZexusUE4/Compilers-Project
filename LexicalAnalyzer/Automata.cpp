@@ -1,33 +1,33 @@
-#include "Automata.h"
+#include "automata.h"
 #include <queue>
 #include <iostream>
 #include <fstream>
 #include <sstream>
 
-Automata::Automata(){
+automata::automata(){
 
 }
 
-Automata::Automata(State* startState, EAutomataType Type){
+automata::automata(state* startState, EAutomataType Type){
 
-	this->startState = startState;
-	automataType = Type;
+	this->start_state = startState;
+	automata_type = Type;
 
 }
 
-Automata::~Automata(){
+automata::~automata(){
 
-	queue<State*> q;
-	set<State*> visited;
-	q.push(startState);
-	visited.insert(startState);
+	queue<state*> q;
+	set<state*> visited;
+	q.push(start_state);
+	visited.insert(start_state);
 
 	while (!q.empty()){
-		State* top = q.front(); q.pop();
-		vector<char> validTransitions = top->getValidTransitions();
+		state* top = q.front(); q.pop();
+		vector<char> validTransitions = top->get_valid_transtitions();
 
 		for (char c : validTransitions){
-			State* neigh = top->nextState(c);
+			state* neigh = top->next_state(c);
 
 			if (visited.find(neigh) == visited.end()){
 				visited.insert(neigh);
@@ -40,30 +40,30 @@ Automata::~Automata(){
 
 }
 
-void Automata::printAutomata(){
+void automata::print_automata(){
 
 
-	set<State*> visited;
-	queue<State*> q;
+	set<state*> visited;
+	queue<state*> q;
 
-	q.push(startState);
-	visited.insert(startState);
+	q.push(start_state);
+	visited.insert(start_state);
 
 	while (!q.empty()){
-		State* top = q.front();
+		state* top = q.front();
 		q.pop();
 
-		top->printState(true);
+		top->print_state(true);
 
-		vector<char> validTransitions = top->getValidTransitions();
+		vector<char> validTransitions = top->get_valid_transtitions();
 
 		for (char c : validTransitions){
-			vector<State*> nextStates = top->nextStates(c);
+			vector<state*> next_states = top->next_states(c);
 
 			cout << c << "  -->  ";
 
-			for (State* st : nextStates){
-				st->printState();
+			for (state* st : next_states){
+				st->print_state();
 
 				if (visited.find(st) == visited.end()){
 					visited.insert(st);
@@ -75,21 +75,21 @@ void Automata::printAutomata(){
 	}
 }
 
-size_t Automata::countStates(){
+size_t automata::count_states(){
 
-    set<State*> visited;
-    queue<State*> q;
-    q.push(startState);
-    visited.insert(startState);
+	set<state*> visited;
+	queue<state*> q;
+    q.push(start_state);
+    visited.insert(start_state);
 
     while(!q.empty()){
-        State* top = q.front(); q.pop();
-        vector<char> validTransitions = top->getValidTransitions();
+        state* top = q.front(); q.pop();
+        vector<char> validTransitions = top->get_valid_transtitions();
 
         for(char c : validTransitions){
-            vector<State*> nextStates = top->nextStates(c);
+			vector<state*> next_states = top->next_states(c);
 
-            for(State* st: nextStates){
+            for(state* st: next_states){
                 if(visited.find(st) == visited.end()){
                     visited.insert(st);
                     q.push(st);
@@ -101,21 +101,21 @@ size_t Automata::countStates(){
     return visited.size();
 }
 
-vector<State*> Automata::getAllStates(){
+vector<state*> automata::get_all_states(){
 
-    set<State*> visited;
-    queue<State*> q;
-    q.push(startState);
-    visited.insert(startState);
+	set<state*> visited;
+	queue<state*> q;
+    q.push(start_state);
+    visited.insert(start_state);
 
     while(!q.empty()){
-        State* top = q.front(); q.pop();
-        vector<char> validTransitions = top->getValidTransitions();
+        state* top = q.front(); q.pop();
+        vector<char> validTransitions = top->get_valid_transtitions();
 
         for(char c : validTransitions){
-            vector<State*> nextStates = top->nextStates(c);
+			vector<state*> next_states = top->next_states(c);
 
-            for(State* st: nextStates){
+            for(state* st: next_states){
                 if(visited.find(st) == visited.end()){
                     visited.insert(st);
                     q.push(st);
@@ -124,25 +124,25 @@ vector<State*> Automata::getAllStates(){
         }
     }
 
-    return vector<State*>(visited.begin(),visited.end());
+	return vector<state*>(visited.begin(), visited.end());
 
 }
 
-vector<char> Automata::getAllTransitions(){
+vector<char> automata::get_all_transtions(){
 
     set<char> allTransitions;
 
-    vector<State*> allStates = getAllStates();
+	vector<state*> allStates = get_all_states();
 
-    for(State * st: allStates){
-        vector<char> validTransitions = st->getValidTransitions();
+    for(state * st: allStates){
+        vector<char> validTransitions = st->get_valid_transtitions();
         allTransitions.insert(validTransitions.begin(),validTransitions.end());
     }
 
     return vector<char>(allTransitions.begin(),allTransitions.end());
 }
 
-void Automata::printTransitionTable(string fileName){
+void automata::print_transition_table(string fileName){
     streambuf *backup;
     backup = std::cout.rdbuf();     // back up cout's streambuf
     std::ofstream out;
@@ -154,8 +154,8 @@ void Automata::printTransitionTable(string fileName){
     }
 
 
-    vector<State*> allStates = getAllStates();
-    vector<char> allTransitions = getAllTransitions();
+	vector<state*> allStates = get_all_states();
+    vector<char> allTransitions = get_all_transtions();
 
     string stId = "--------------";
     string colSep = "--------";
@@ -176,7 +176,7 @@ void Automata::printTransitionTable(string fileName){
     }
     cout << endl;
 
-    for(State* st: allStates){
+    for(state* st: allStates){
         cout << stId;
         cout << accNameSep;
         for(int i = 0;i < allTransitions.size();i++){
@@ -191,7 +191,7 @@ void Automata::printTransitionTable(string fileName){
             cout << " ";
 
         string acc = "           ";
-        if(st->isAcceptanceState())
+        if(st->is_acceptance_state())
             acc = st->name;
 
         remSpaces = accNameSep.size() - acc.size() - 1;
@@ -201,8 +201,8 @@ void Automata::printTransitionTable(string fileName){
             cout << " ";
 
         for(char c: allTransitions){
-            if(st->isValidTransition(c)){
-                string stId = num2str(st->nextState(c)->id);
+            if(st->is_valid_transition(c)){
+                string stId = num2str(st->next_state(c)->id);
                 cout << "| ";
                 int remSeps = colSep.size() - stId.size() - 2;
                 cout << stId;
@@ -222,7 +222,7 @@ void Automata::printTransitionTable(string fileName){
     }
 }
 
-string Automata::num2str ( int Number )
+string automata::num2str ( int Number )
   {
      ostringstream ss;
      ss << Number;

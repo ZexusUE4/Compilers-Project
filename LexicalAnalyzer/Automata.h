@@ -1,8 +1,8 @@
 #pragma once
 
-#include "StateBase.h"
-#include "State.h"
-#include "MultiState.h"
+#include "state_base.h"
+#include "state.h"
+#include "multi_state.h"
 
 /*Types of the automata:
 	1- Nondeterministic.
@@ -13,7 +13,7 @@ enum EAutomataType
 	ENFA, EDFA, EMDFA
 };
 
-class Automata
+class automata
 {
 private:
 
@@ -22,37 +22,37 @@ private:
 public:
 
 	/* Current state of this automata */
-	State* currentState;
+	state* current_state;
 
 	/* Starting state of this automata */
-	State* startState;
+	state* start_state;
 
 	/* Current type of this automata */
-	EAutomataType automataType;
+	EAutomataType automata_type;
 
 	/**** Functions ****/
 
 	/* Default constructor */
-	Automata();
+	automata();
 
 	/* Destructor that deletes all the states in this automata */
-	~Automata();
+	~automata();
 
 	/* Automata constructor */
-	Automata(State* startState, EAutomataType Type);
+	automata(state* startState, EAutomataType Type);
 
     /* Returns a vector containing all states in this Automata */
-	vector<State*> getAllStates();
+	vector<state*> get_all_states();
 
-	vector<char> getAllTransitions();
+	vector<char> get_all_transtions();
 
 	/* Prints all States and transitions inside this Automata*/
-	void printAutomata();
+	void print_automata();
 
 	/* returns the number of states in this automata */
-	size_t countStates();
+	size_t count_states();
 
 	/*Prints the transition table */
-	void printTransitionTable(string fileName = "STDOUT");
+	void print_transition_table(string fileName = "STDOUT");
 
 };

@@ -1,64 +1,64 @@
-#include "State.h"
+#include "state.h"
 #include <queue>
 #include <iostream>
 
-State::State(string name, bool isAcceptance , int priority ,bool isDummy){
+state::state(string name, bool isAcceptance , int priority ,bool is_dummy){
 	this->name = name;
-	this->acceptanceFlag = isAcceptance;
+	this->acceptance_flag = isAcceptance;
 	this->priority = priority;
-	this->isDummy = isDummy;
+	this->is_dummy = is_dummy;
 }
 
-State::~State(){
+state::~state(){
 
 }
 
-bool State::isValidTransition(char ch){
+bool state::is_valid_transition(char ch){
 
-	vector<State*> nextStates = transitions[ch];
+	vector<state*> next_states = transitions[ch];
 
-	return nextStates.size() > 0;
+	return next_states.size() > 0;
 }
 
-State* State::nextState(char ch){
-	if (!isValidTransition(ch))
+state* state::next_state(char ch){
+	if (!is_valid_transition(ch))
 		return NULL;
 
-	vector<State*> nextStates = transitions[ch];
+	vector<state*> next_states = transitions[ch];
 
-	return nextStates[0];
+	return next_states[0];
 }
 
-vector<State*> State::nextStates(char ch){
-	if (!isValidTransition(ch))
-		return vector<State*>();
+vector<state*> state::next_states(char ch){
+	if (!is_valid_transition(ch))
+		return vector<state*>();
 
 	return transitions[ch];
 }
 
 
-void State::addTransition(char transitionChar, State* nextState){
-	transitions[transitionChar].push_back(nextState);
+void state::add_transiton(char transitionChar, state* next_state){
+	transitions[transitionChar].push_back(next_state);
 }
 
-void State::clearTransitions(){
+void state::clear_transitions(){
 	transitions.clear();
 }
 
-set<State*> State::getEpsilonClosure(){
+set<state*> state::get_epsilon_closure(){
 
-	set<State*> epsClosure;
+	set<state*> epsClosure;
 	epsClosure.insert(this);
 
-	queue<State*> q;
+	queue<state*> q;
 	q.push(this);
 
 	while (!q.empty()){
 
-		State* cur = q.front(); q.pop();
-		vector<State*> nextStates = cur->nextStates(Eps);
+		state* cur = q.front(); q.pop();
+		vector<state*> next_states = cur->next_states(Eps);
 
-		for (State* st : nextStates){
+		for (state* st : next_states){
 
 			if (epsClosure.find(st) == epsClosure.end()){
 				q.push(st);
@@ -71,7 +71,7 @@ set<State*> State::getEpsilonClosure(){
 	return epsClosure;
 }
 
-vector<char> State::getValidTransitions(bool ignoreEps){
+vector<char> state::get_valid_transtitions(bool ignoreEps){
 
 	vector<char> validTransitions;
 
@@ -86,14 +86,14 @@ vector<char> State::getValidTransitions(bool ignoreEps){
 	return validTransitions;
 }
 
-void State::printState(bool detailed){
+void state::print_state(bool detailed){
 
 	cout << "State id: " << id;
 
 	if (detailed){
 		cout << ", ";
-		cout << "name: \"" << name << "\"" <<  ", AcceptanceFlag: " << acceptanceFlag << endl;
-		vector<char> validTransitions = getValidTransitions();
+		cout << "name: \"" << name << "\"" <<  ", AcceptanceFlag: " << acceptance_flag << endl;
+		vector<char> validTransitions = get_valid_transtitions();
 
 		cout << "Transitions: ";
 
@@ -111,6 +111,6 @@ void State::printState(bool detailed){
 	cout << endl;
 }
 
-bool State::operator<(const State &st) const{
+bool state::operator<(const state &st) const{
 	return id < st.id;
 }

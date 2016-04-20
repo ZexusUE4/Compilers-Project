@@ -2,13 +2,13 @@
 #define PARSER_H_INCLUDED
 #include <fstream>
 #include <stack>
-#include "Automata.h"
+#include "automata.h"
 
 enum type{
     DEF,REGX,KEYWORD,PUNC
 };
 
-class Parser
+class regex_reader
 {
 private:
 
@@ -22,7 +22,7 @@ private:
     vector<string> keywords;
 
 	/* all start states of all regular expressions */
-    vector<State*> start_states;
+    vector<state*> start_states;
 
 	/* all regular expressions found in the file */
     vector < pair <string ,string > > regexs;
@@ -35,13 +35,13 @@ private:
     int p =1;
 
 	/* start state of NFA automata */
-	State *start;
+	state *start;
 
 	/* singelton instance */
-	static Parser* instance;
+	static regex_reader* instance;
 
 	/* Default Constructor */
-	Parser();
+	regex_reader();
 
 	/* process line by line and do all needed functionalities */
     void process_line(string s);
@@ -77,7 +77,7 @@ private:
     string get_enclosed(char c);
 
 	/* make an automata for - symbol */
-    void decode_or(stack<pair<State* , State*> > &st,int from,int to);
+    void decode_or(stack<pair<state* , state*> > &st,int from,int to);
 
     string enclose_or(int from, int to);
 
@@ -95,22 +95,22 @@ private:
 	/* evaluate the expressions to get the automata */
     void evaluate_regex();
 	/* create two states separated by a char */
-    void create_state(stack<pair<State* , State*> > &st , string name,char c);
+    void create_state(stack<pair<state* , state*> > &st , string name,char c);
 
 	/* concatenate two states and separate them by an epsilon char.. the start of the resulting state will be the start of the first and the end will be from the second*/
-    void concatenate(stack<pair<State* , State*> > &st);
+    void concatenate(stack<pair<state* , state*> > &st);
 
 	/*get the automata of one or more expression */
-    void one_or_more(stack<pair<State* , State*> > &st);
+    void one_or_more(stack<pair<state* , state*> > &st);
 
 	/*get the automata of zero or more expression */
-    void zero_or_more(stack<pair<State* , State*> > &st);
+    void zero_or_more(stack<pair<state* , state*> > &st);
 
 	/* get the automata of or operation */
-    void or_op(stack<pair<State* , State*> > &st);
+    void or_op(stack<pair<state* , state*> > &st);
 
 	/* decide which funciton will be called depending on the operation used*/
-    void solve(stack<pair<State* , State*> > &st, char c,char from , char to);
+    void solve(stack<pair<state* , state*> > &st, char c,char from , char to);
 
 	/* make one start for all automatas */
     void make_one_start();
@@ -120,10 +120,10 @@ private:
 public:
 
 	/* Returns the NFA of the given input regex file */
-	Automata* getNFA(string filename);
+	automata* get_nfa(string filename);
 
 	/* Returns the singelton instance of this class */
-	static Parser* getInstance();
+	static regex_reader* getInstance();
 };
 
 

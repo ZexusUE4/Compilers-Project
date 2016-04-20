@@ -1,70 +1,11 @@
 #include "analyzer.h"
 
-bool analyzer::isValidFile( string fname )
+
+analyzer::analyzer( string rules_file_name, string compile_file_name )
 {
-   return ( access( fname.c_str(), F_OK ) != -1 );
-}
-
-bool analyzer::file_extract( string& src , string str )
-{
-    int i = 0 ;
-    while( str[i]!='\"' && i < str.size() )++i ;
-    ++i ;
-
-    src.clear();
-    for( ; i < str.size() && str[i]!='\"' ; ++i)
-        src.push_back(str[i]);
-
-    return isValidFile(src);
-}
-
-bool analyzer::local_set( string str )
-{
-    istringstream is(str) ;
-    string ss ;
-    is >> ss ;
-    if( ss == "rules"){
-        is >> ss ;
-        is >> ss ;
-        return file_extract(rules_file,ss);
-    }
-    else if( ss == "compile" ){
-        is >> ss ;
-        is >> ss ;
-        return file_extract(compile_file,ss);
-    }
-    else{
-        return 0 ;
-    }
-}
-
-analyzer::analyzer( string configuration_file )
-{
-    hasErr = 0 ;
-    if( !isValidFile(configuration_file) ){
-        hasErr = 1 ;
-        return ;
-    }
-
-    ifstream conf_file(configuration_file) ;
-    string str = "" ;
-
-    getline(conf_file,str);
-    if( !local_set(str) ){
-        hasErr = 1 ;
-        return ;
-    }
-
-    getline(conf_file,str);
-    if( !local_set(str) ){
-        hasErr = 1 ;
-        return ;
-    }
-
-    if( !isValidFile(rules_file) || !isValidFile(compile_file) || (rules_file == compile_file) ){
-        hasErr = 1 ;
-        return ;
-    }
+    has_err = 0;
+    this->rules_file = rules_file_name;
+    this->compile_file = compile_file_name;
 }
 
 analyzer::~analyzer()
@@ -74,30 +15,30 @@ analyzer::~analyzer()
     }
 }
 
-bool analyzer::hasError()
+bool analyzer::has_error()
 {
-    return hasErr ;
+    return has_err ;
 }
 
-void analyzer::printFilesNames()
+void analyzer::print_files_names()
 {
-    cout<< "Expression rules file : " <<rules_file<<endl ;
-    cout<< "File to compile : "<<compile_file<<endl;
+    cout<< "rules : " <<rules_file<<endl ;
+    cout<< "compile : "<<compile_file<<endl;
 }
 
 void analyzer::start()
 {
-    if( hasError() )return ;
-    Automata* NFAmata = Parser::getInstance()->getNFA(rules_file);
-	NFAtoDFA* converter = NFAtoDFA::getInstance();
-	DFA = converter->getDFA(NFAmata);
+    if( has_error() )return ;
+    automata* NFAmata = regex_reader::getInstance()->get_nfa(rules_file);
+	nfa_to_dfa* converter = nfa_to_dfa::get_instance();
+	DFA = converter->get_dfa(NFAmata);
     comp_f_stream.open(compile_file,ios_base::binary);
 }
 
 void analyzer::refresh()
 {
     last_acceptance = NULL ;
-    current_state = DFA->startState ;
+    current_state = DFA->start_state ;
 }
 
 char analyzer::read_char()
@@ -181,7 +122,7 @@ void analyzer::drop_garbage()
     }
 }
 
-token analyzer::getToken()
+token analyzer::get_token()
 {
     refresh();
     drop_garbage();
@@ -196,9 +137,9 @@ token analyzer::getToken()
         int c = read_char();
         value.push_back(c);
 
-        if( current_state->isValidTransition(c) ){
-            current_state = current_state->nextState(c);
-            if( current_state->isAcceptanceState() ){
+        if( current_state->is_valid_transition(c) ){
+            current_state = current_state->next_state(c);
+            if( current_state->is_acceptance_state() ){
                 last_acceptance = current_state ;
                 acceptace_pos = comp_f_stream.tellg();
             }
@@ -222,7 +163,7 @@ token analyzer::getToken()
 
 token analyzer::fix_error( token t )
 {
-    string val = t.getValue();
+    string val = t.get_value();
     string temp = val ;
     //  for(int i = 0 ; i < )
 }

@@ -5,8 +5,8 @@
 #include <fstream>
 #include <sstream>
 #include <unistd.h>
-#include "Parser.h"
-#include "NFAtoDFA.h"
+#include "regex_reader.h"
+#include "nfa_to_dfa.h"
 #include <iostream>
 
 #define dbg(n) cout<<"Debug "<<n<<endl
@@ -15,18 +15,18 @@
 class analyzer
 {
     public:
-        analyzer( string configuration_file );
+        analyzer( string rules_file_name, string compile_file_name );
         virtual ~analyzer();
 
-        token getToken();                              /* Get next token , for compiler parser */
-        bool hasError();                               /* IF the file reading has errors */
-        void printFilesNames();                        /* Print compile and lexical rules file names */
+        token get_token();                              /* Get next token , for compiler parser */
+        bool has_error();                               /* IF the file reading has errors */
+        void print_files_names();                        /* Print compile and lexical rules file names */
         void start();                                  /* Only if has error is false , make DFA */
 
     private:
         bool local_set( string str );                  /* Setter to rules and compile files */
         bool file_extract( string& src , string str ); /* Get the file name from double quotes "fname" */
-        bool isValidFile( string fname );              /* Check if the string represents exists file */
+        bool is_valid_file( string fname );              /* Check if the string represents exists file */
         token fix_error( token err_t );                /* Try to fix the token to match the DFA */
         void refresh();                                /* Refresh states to look for new token */
         char read_char();                              /* Get one character from the stream */
@@ -38,11 +38,11 @@ class analyzer
 
         string rules_file ;                            /* To send it to the Lex file parser */
         string compile_file ;                          /* The target file to be analyzed */
-        bool hasErr ;
+        bool has_err ;
         ifstream comp_f_stream ;                       /* A stream to tokenize */
-        Automata* DFA ;
-        State* current_state ;
-        State* last_acceptance ;
+        automata* DFA ;
+        state* current_state ;
+        state* last_acceptance ;
         int acceptace_pos ;                            /* to return to correct position in stream */
 };
 

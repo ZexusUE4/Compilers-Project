@@ -13,15 +13,15 @@ class entry
         entry( string lexeme , string type );
         virtual ~entry();
 
-        void setLexeme( string lex );
-        void setType( string typ );
-        void setInfo( string inf );
-        void addExtraValue( string val );
+        void set_lexeme( string lex );
+        void set_type( string typ );
+        void set_info( string inf );
+        void add_extra_value( string val );
 
-        string getLexeme();
-        string getType();
-        string getInfo();
-        string getExtra( int pos );
+        string get_lexeme();
+        string get_type();
+        string get_info();
+        string get_extra( int pos );
         int size_of_extra();
 
         bool operator <( const entry& e ) const;

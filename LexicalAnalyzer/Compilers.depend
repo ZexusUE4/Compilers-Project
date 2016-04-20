@@ -1,0 +1,217 @@
+# depslib dependency file v1.0
+1459015677 source:c:\users\mohamed\desktop\codes\compilers\main.cpp
+	"NFAtoDFA.h"
+	<iostream>
+	<string>
+	<sstream>
+	"Parser.h"
+
+1459016094 source:c:\users\mohamed\desktop\codes\compilers\parser.cpp
+	"Parser.h"
+	<iostream>
+
+1459015551 c:\users\mohamed\desktop\codes\compilers\parser.h
+	<fstream>
+	<stack>
+	"Automata.h"
+
+1458989308 source:c:\users\mohamed\desktop\codes\compilers\automata.cpp
+	"Automata.h"
+	<set>
+	<queue>
+	<iostream>
+
+1458992122 c:\users\mohamed\desktop\codes\compilers\automata.h
+	"StateBase.h"
+	"State.h"
+	"MultiState.h"
+
+1459009958 c:\users\mohamed\desktop\codes\compilers\statebase.h
+	<map>
+	<vector>
+	<set>
+	<string>
+
+1459010061 c:\users\mohamed\desktop\codes\compilers\state.h
+	<map>
+	<vector>
+	<set>
+	<string>
+	"StateBase.h"
+
+1458992094 c:\users\mohamed\desktop\codes\compilers\multistate.h
+	"State.h"
+
+1458992392 c:\users\mohamed\desktop\codes\compilers\nfatodfa.h
+	"Automata.h"
+
+1458992443 source:c:\users\mohamed\desktop\codes\compilers\multistate.cpp
+	"MultiState.h"
+	<iostream>
+
+1458947498 source:c:\users\mohamed\desktop\codes\compilers\nfatodfa.cpp
+	"NFAtoDFA.h"
+	<queue>
+	<iostream>
+
+1459010018 source:c:\users\mohamed\desktop\codes\compilers\state.cpp
+	"State.h"
+	<queue>
+	<iostream>
+
+1458906644 source:c:\users\mohamed\desktop\codes\compilers\statebase.cpp
+	"StateBase.h"
+
+1461181073 source:e:\csed\compilers\compiler-project\lexicalanalyzer\automata.cpp
+	"automata.h"
+	<queue>
+	<iostream>
+	<fstream>
+	<sstream>
+
+1461181073 e:\csed\compilers\compiler-project\lexicalanalyzer\automata.h
+	"state_base.h"
+	"state.h"
+	"multi_state.h"
+
+1459092382 e:\csed\compilers\compiler-project\lexicalanalyzer\statebase.h
+	<map>
+	<map>
+	<set>
+	<vector>
+	<set>
+	<string>
+
+1461179721 e:\csed\compilers\compiler-project\lexicalanalyzer\state.h
+	<vector>
+	<string>
+	"state_base.h"
+
+1459159841 e:\csed\compilers\compiler-project\lexicalanalyzer\multistate.h
+	"State.h"
+
+1459165228 source:e:\csed\compilers\compiler-project\lexicalanalyzer\multistate.cpp
+	"MultiState.h"
+	<iostream>
+
+1459192899 source:e:\csed\compilers\compiler-project\lexicalanalyzer\nfatodfa.cpp
+	"NFAtoDFA.h"
+	<queue>
+	<iostream>
+	<vector>
+	<map>
+	<set>
+
+1459162247 e:\csed\compilers\compiler-project\lexicalanalyzer\nfatodfa.h
+	"Automata.h"
+
+1461176819 source:e:\csed\compilers\compiler-project\lexicalanalyzer\parser.cpp
+	"Parser.h"
+	<iostream>
+
+1461176819 e:\csed\compilers\compiler-project\lexicalanalyzer\parser.h
+	<fstream>
+	<stack>
+	"Automata.h"
+
+1461179792 source:e:\csed\compilers\compiler-project\lexicalanalyzer\state.cpp
+	"state.h"
+	<queue>
+	<iostream>
+
+1461176819 source:e:\csed\compilers\compiler-project\lexicalanalyzer\statebase.cpp
+	"StateBase.h"
+
+1461185953 source:e:\csed\compilers\compiler-project\lexicalanalyzer\main.cpp
+	"compiler.h"
+
+1461186244 source:e:\csed\compilers\compiler-project\lexicalanalyzer\analyzer.cpp
+	"analyzer.h"
+
+1461185315 e:\csed\compilers\compiler-project\lexicalanalyzer\analyzer.h
+	"token.h"
+	<fstream>
+	<sstream>
+	<unistd.h>
+	"regex_reader.h"
+	"nfa_to_dfa.h"
+	<iostream>
+
+1461179234 e:\csed\compilers\compiler-project\lexicalanalyzer\token.h
+	<string>
+
+1461179803 source:e:\csed\compilers\compiler-project\lexicalanalyzer\token.cpp
+	"token.h"
+
+1461178883 source:e:\csed\compilers\compiler-project\lexicalanalyzer\entry.cpp
+	"entry.h"
+
+1461178775 e:\csed\compilers\compiler-project\lexicalanalyzer\entry.h
+	<string>
+	<vector>
+
+1461177999 e:\csed\compilers\compiler-project\lexicalanalyzer\symbol_table.h
+	"entry.h"
+	<map>
+	<string>
+
+1461179524 source:e:\csed\compilers\compiler-project\lexicalanalyzer\symbol_table.cpp
+	"symbol_table.h"
+
+1459183673 e:\csed\compilers\compiler-project\lexicalanalyzer\lexical_analyzer\entry.h
+	<string>
+	<vector>
+
+1461179733 e:\csed\compilers\compiler-project\lexicalanalyzer\regex_reader.h
+	<fstream>
+	<stack>
+	"automata.h"
+
+1461179263 e:\csed\compilers\compiler-project\lexicalanalyzer\state_base.h
+	<map>
+	<map>
+	<set>
+	<vector>
+	<set>
+	<string>
+
+1461181063 e:\csed\compilers\compiler-project\lexicalanalyzer\multi_state.h
+	"state.h"
+
+1461179740 e:\csed\compilers\compiler-project\lexicalanalyzer\nfa_to_dfa.h
+	"automata.h"
+
+1461181073 source:e:\csed\compilers\compiler-project\lexicalanalyzer\nfa_2_dfa.cpp
+	"nfa_to_dfa.h"
+	<queue>
+	<iostream>
+	<vector>
+	<map>
+	<set>
+
+1461179785 source:e:\csed\compilers\compiler-project\lexicalanalyzer\regex_reader.cpp
+	"regex_reader.h"
+	<iostream>
+
+1461179798 source:e:\csed\compilers\compiler-project\lexicalanalyzer\state_base.cpp
+	"state_base.h"
+
+1461181919 source:e:\csed\compilers\compiler-project\lexicalanalyzer\multi_state.cpp
+	"multi_state.h"
+	<iostream>
+
+1461181073 source:e:\csed\compilers\compiler-project\lexicalanalyzer\nfa_to_dfa.cpp
+	"nfa_to_dfa.h"
+	<queue>
+	<iostream>
+	<vector>
+	<map>
+	<set>
+
+1461186327 source:e:\csed\compilers\compiler-project\lexicalanalyzer\compiler.cpp
+	"compiler.h"
+
+1461185904 e:\csed\compilers\compiler-project\lexicalanalyzer\compiler.h
+	"analyzer.h"
+	"symbol_table.h"
+
