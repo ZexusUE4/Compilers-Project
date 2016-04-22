@@ -74,6 +74,30 @@
 		<Unit filename="nfa_to_dfa.h">
 			<Option virtualFolder="Lexical Analyzer/Headers/" />
 		</Unit>
+		<Unit filename="parser.cpp">
+			<Option virtualFolder="Parser/Source/" />
+		</Unit>
+		<Unit filename="parser.h">
+			<Option virtualFolder="Parser/Headers/" />
+		</Unit>
+		<Unit filename="production.cpp">
+			<Option virtualFolder="Parser/Source/" />
+		</Unit>
+		<Unit filename="production.h">
+			<Option virtualFolder="Parser/Headers/" />
+		</Unit>
+		<Unit filename="production_reader.cpp">
+			<Option virtualFolder="Parser/Source/" />
+		</Unit>
+		<Unit filename="production_reader.h">
+			<Option virtualFolder="Parser/Headers/" />
+		</Unit>
+		<Unit filename="psymbol.cpp">
+			<Option virtualFolder="Parser/Source/" />
+		</Unit>
+		<Unit filename="psymbol.h">
+			<Option virtualFolder="Parser/Headers/" />
+		</Unit>
 		<Unit filename="regex_reader.cpp">
 			<Option virtualFolder="Lexical Analyzer/Sources/" />
 		</Unit>

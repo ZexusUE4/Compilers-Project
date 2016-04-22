@@ -37,6 +37,8 @@ set<production> production_reader::read(string file_name){
         }
     }
 
+    ret.insert(*prev);
+
     return ret;
 }
 
