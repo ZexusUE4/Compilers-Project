@@ -25,6 +25,8 @@ compiler::compiler(string configuration_file)
     }
 
     lex_analyzer = new analyzer(rules_file_name,compile_file_name);
+    predictive_parser = new parser(productions_file_name);
+
 }
 
 compiler::~compiler(){

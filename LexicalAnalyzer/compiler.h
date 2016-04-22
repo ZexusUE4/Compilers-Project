@@ -3,6 +3,7 @@
 
 #include "analyzer.h"
 #include "symbol_table.h"
+#include "parser.h"
 
 #define INVALID_FILE 1
 
@@ -32,6 +33,9 @@ class compiler
 
     /* A reference to the lexical analyzer used by the compiler */
     analyzer* lex_analyzer;
+
+    /* A reference to the predictive parser used by the compiler */
+    parser* predictive_parser;
 
     /* symbol table */
     symbol_table* sym_table;
