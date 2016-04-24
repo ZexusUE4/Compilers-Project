@@ -14,18 +14,21 @@ enum class psymbol_type {
 class psymbol
 {
 private:
-
-public:
-
     /* string value of the production symbol */
     string value;
 
     /* type of the production symbol */
     psymbol_type type;
 
+public:
     /* production symbol constructor */
     psymbol(string val, psymbol_type typ);
 
     /* default constructor */
     psymbol();
+
+    string get_val() const ;
+    psymbol_type get_type() const ;
+
+    bool operator<(const psymbol &b) const;
 };

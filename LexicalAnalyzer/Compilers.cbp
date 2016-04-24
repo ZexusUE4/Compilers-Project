@@ -5,7 +5,7 @@
 		<Option title="Compilers" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
-		<Option virtualFolders="Lexical Analyzer\;Lexical Analyzer\;Lexical Analyzer\;Lexical Analyzer\Sources\;Lexical Analyzer\;Lexical Analyzer\;Lexical Analyzer\Headers\;Compiler\Sources\;Compiler\Header\;Parser\;Parser\Headers\;Parser\Source\;" />
+		<Option virtualFolders="Lexical Analyzer\;Lexical Analyzer\;Lexical Analyzer\;Lexical Analyzer\Sources\;Lexical Analyzer\;Lexical Analyzer\;Lexical Analyzer\Headers\;Compiler\Sources\;Compiler\Header\;Parser\;Parser\Headers\;Parser\Source\;Debug Tools\;" />
 		<Build>
 			<Target title="Debug">
 				<Option output="bin/Debug/Compilers" prefix_auto="1" extension_auto="1" />
@@ -35,16 +35,22 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="Automata.cpp">
+			<Option virtualFolder="Lexical Analyzer/Sources/" />
+		</Unit>
+		<Unit filename="Automata.h">
+			<Option virtualFolder="Lexical Analyzer/Headers/" />
+		</Unit>
+		<Unit filename="State.cpp">
+			<Option virtualFolder="Lexical Analyzer/Sources/" />
+		</Unit>
+		<Unit filename="State.h">
+			<Option virtualFolder="Lexical Analyzer/Headers/" />
+		</Unit>
 		<Unit filename="analyzer.cpp">
 			<Option virtualFolder="Lexical Analyzer/Sources/" />
 		</Unit>
 		<Unit filename="analyzer.h">
-			<Option virtualFolder="Lexical Analyzer/Headers/" />
-		</Unit>
-		<Unit filename="automata.cpp">
-			<Option virtualFolder="Lexical Analyzer/Sources/" />
-		</Unit>
-		<Unit filename="automata.h">
 			<Option virtualFolder="Lexical Analyzer/Headers/" />
 		</Unit>
 		<Unit filename="compiler.cpp">
@@ -52,6 +58,10 @@
 		</Unit>
 		<Unit filename="compiler.h">
 			<Option virtualFolder="Compiler/Header/" />
+		</Unit>
+		<Unit filename="debugger.h">
+			<Option virtualFolder="Debug Tools/" />
+			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Unit filename="entry.cpp">
 			<Option virtualFolder="Lexical Analyzer/Sources/" />
@@ -102,12 +112,6 @@
 			<Option virtualFolder="Lexical Analyzer/Sources/" />
 		</Unit>
 		<Unit filename="regex_reader.h">
-			<Option virtualFolder="Lexical Analyzer/Headers/" />
-		</Unit>
-		<Unit filename="state.cpp">
-			<Option virtualFolder="Lexical Analyzer/Sources/" />
-		</Unit>
-		<Unit filename="state.h">
 			<Option virtualFolder="Lexical Analyzer/Headers/" />
 		</Unit>
 		<Unit filename="state_base.cpp">

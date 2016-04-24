@@ -8,6 +8,15 @@ class production
 private:
 
 public:
+    /* production constructor */
+    production(psymbol lhs, vector<psymbol> rhs);
+
+    /* Operator < overloading */
+	bool operator<(const production &b) const;
+
+    /* prints the production */
+    void print_production();
+    string to_string();
 
     /* left hand side of the production, must be a non-terminal */
     psymbol lhs;
@@ -15,12 +24,6 @@ public:
     /* right hand side of the production */
     vector<psymbol> rhs;
 
-    /* production constructor */
-    production(psymbol lhs, vector<psymbol> rhs);
-
-    /* Operator < overloading */
-	bool operator<(const production &rhs) const;
-
-    /* prints the production */
-    void print_production();
+    vector<psymbol> get_rhs() const ;
+    psymbol get_lhs() const ;
 };

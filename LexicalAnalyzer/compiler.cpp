@@ -89,7 +89,7 @@ int compiler::start_compilation(){
 
     while(true){
         token t = lex_analyzer->get_token();
-        if( !sym_table->exists(t.get_value()) ){
+        if( !sym_table->exists(t.get_value()) ){//still work to be done here
             sym_table->add(t.get_value(),entry(t.get_value(),t.get_type()));
         }
 

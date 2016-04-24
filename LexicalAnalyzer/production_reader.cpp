@@ -58,7 +58,10 @@ vector<psymbol> production_reader::space_splitted(string str){
     while(ss){
         string t;
         ss >> t;
-        tokens.push_back(psymbol(t,get_psymbol_type(t)));
+
+        if(t.size()){
+            tokens.push_back(psymbol(t,get_psymbol_type(t)));
+        }
     }
 
     return tokens;

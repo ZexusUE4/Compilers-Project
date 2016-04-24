@@ -6,15 +6,41 @@ production::production(psymbol lhs, vector<psymbol> rhs){
     this->rhs = rhs;
 }
 
-bool production::operator<(const production &rhs) const{
-    return lhs.value < rhs.lhs.value;
+bool production::operator<(const production & b) const{
+    if( lhs.get_val() == b.lhs.get_val() ){
+        return rhs < b.rhs ;
+    }
+    return lhs< b.lhs ;
 }
 
 void production::print_production(){
-    cout << lhs.value << " " << "---> ";
+    cout << lhs.get_val() << " " << "---> ";
 
     for(psymbol ps : rhs){
-        cout << ps.value << " ";
+        cout << ps.get_val() << " ";
     }
     cout << endl;
+}
+
+string production::to_string()
+{
+    string ret = lhs.get_val() ;
+    ret += " ---> " ;
+
+    for(psymbol ps : rhs){
+        ret += ps.get_val();
+        ret += " ";
+    }
+
+    return ret ;
+}
+
+vector<psymbol> production::get_rhs() const
+{
+    return rhs ;
+}
+
+psymbol production::get_lhs() const
+{
+    return lhs ;
 }

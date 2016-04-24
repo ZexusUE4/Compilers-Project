@@ -12,3 +12,18 @@ psymbol::psymbol(string val,psymbol_type typ){
 psymbol::psymbol(){
 
 }
+
+string psymbol::get_val() const
+{
+    return value ;
+}
+
+psymbol_type psymbol::get_type() const
+{
+    return type ;
+}
+
+bool psymbol::operator<(const psymbol &b) const
+{
+    return get_val() < b.get_val();
+}
