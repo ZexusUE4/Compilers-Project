@@ -1,5 +1,6 @@
 #include "parser.h"
 #include "production_reader.h"
+#include <iostream>
 
 parser::parser(string productions_file_name){
     productions = production_reader::get_instance()->read(productions_file_name);
@@ -102,7 +103,9 @@ void parser::solve_first_symbol( psymbol left )
                     break ;
                 }
                 case psymbol_type::non_terminal :{
-                    solve_first_symbol(ps);//recurse //ONLY non-valid if we have left recursion
+                    if( !is_visited(ps) )
+                        solve_first_symbol(ps);//recurse //ONLY non-valid if we have left recursion
+
                     set<pair<psymbol,production>> temp = first_sets[ps] ;
                     set<pair<psymbol,production>>::iterator it = temp.begin();
                     while(it!=temp.end()){
