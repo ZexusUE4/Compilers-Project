@@ -234,27 +234,18 @@ void parser::create_components()
             ++components_cnt ;
         }
     }
-
     visited.clear();
-    for(production p : productions){
-        psymbol lhs = p.get_lhs();
-        if( !is_visited(lhs) )
-            make_graph(lhs);
-    }
-}
 
-void parser::make_graph( psymbol s )
-{
-    visited.insert(s);
-
-    for( psymbol to : follow_graph[s] ){
-        if( !is_visited(to) ){
-            make_graph(to);
+    map<psymbol,set<psymbol>>::iterator it = follow_graph.begin();
+    while(it != follow_graph.end()){
+        int from = component[it->first];
+        for( psymbol ps : it->second ){
+            int to = component[ps] ;
+            if( from != to )components_graph[from].insert(to);
         }
-        else if( component[s] != component[to] ){
-            components_graph[component[s]].insert( component[to] );
-        }
+        ++it ;
     }
+
 }
 
 void parser::print_components()
