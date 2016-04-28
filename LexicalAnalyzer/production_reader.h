@@ -27,6 +27,9 @@ private:
     /* splits the given string on the space */
     vector<psymbol> space_splitted(string str);
 
+    /* Start symbol of the productions */
+    psymbol start_symbol ;
+
 public:
 
     /* starts reading the productions file and returns a set containing all productions */
@@ -34,4 +37,6 @@ public:
 
     /* returns the singleton instance of the production_reader class */
     static production_reader * get_instance();
+
+    psymbol get_first_symbol();
 };

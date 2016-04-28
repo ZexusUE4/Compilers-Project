@@ -15,6 +15,11 @@ production_reader::production_reader(){
 
 }
 
+psymbol production_reader::get_first_symbol()
+{
+    return start_symbol ;
+}
+
 set<production> production_reader::read(string file_name){
     file.open(file_name, ifstream::in);
 
@@ -26,10 +31,16 @@ set<production> production_reader::read(string file_name){
 
         if(is_new_production(line)){
 
-            if(prev)
+            if(prev){
+                if(ret.size() == 0){
+                    start_symbol = prev->get_lhs();
+                }
                 ret.insert(*prev);
+            }
 
             prev = parse_line_to_prodcution(line);
+
+
         }
         else{
             vector<psymbol> splitted = space_splitted(line);

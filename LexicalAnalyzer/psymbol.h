@@ -8,7 +8,8 @@ enum class psymbol_type {
     terminal,
     non_terminal,
     epsilon,
-    or_operator
+    or_operator,
+    start_dummy
 };
 
 class psymbol
