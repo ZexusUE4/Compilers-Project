@@ -128,14 +128,21 @@ token analyzer::get_token()
     drop_garbage();
 
     if( peek_char() == EOF )
-        return token("END_OF_FILE","") ;
+        return token("END_OF_FILE"," ") ;
 
     int first_pos = comp_f_stream.tellg();
     string value = "" ;
 
     while( true ){
-        int c = read_char();
-        value.push_back(c);
+        int c = peek_char();
+
+        if( c != EOF ){
+            value.push_back(c);
+            read_char();
+        }
+        else{
+            comp_f_stream.seekg(0,comp_f_stream.end);
+        }
 
         if( current_state->is_valid_transition(c) ){
             current_state = current_state->next_state(c);
@@ -147,9 +154,8 @@ token analyzer::get_token()
         else{//dead end
             if( last_acceptance != NULL ){
                 int len = comp_f_stream.tellg()-acceptace_pos ;
-                for(int i = 0 ; i < len ; ++i){
-                    value.pop_back();
-                }
+                int new_len = value.size() - len ;
+                value.resize(new_len);
                 restore_pos();
                 return token(last_acceptance->name,value);
             }
