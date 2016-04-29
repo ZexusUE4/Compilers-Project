@@ -5,6 +5,10 @@ production::production(psymbol lhs, vector<psymbol> rhs){
     this->lhs = lhs;
     this->rhs = rhs;
 }
+production::production()
+{
+
+}
 
 bool production::operator<(const production & b) const{
     if( lhs.get_val() == b.lhs.get_val() ){

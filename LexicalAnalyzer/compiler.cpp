@@ -82,18 +82,26 @@ int compiler::start_compilation(){
     sym_table  = new symbol_table();
 
     ofstream out("out.txt");
+    ofstream out2("derivation.txt");
+    predictive_parser->start(out2);
+
 
     if( err_code != 0 ){
         return err_code;
     }
+    if(predictive_parser->has_error)
+        out2  << "ERROR :: NOT VALID LL(1) GRAMMAR Due to ambiguity."<<endl;
 
     while(true){
         token t = lex_analyzer->get_token();
         if( !sym_table->exists(t.get_value()) ){//still work to be done here
             sym_table->add(t.get_value(),entry(t.get_value(),t.get_type()));
         }
-
         out<<t.get_type()<<endl;
+        string x = t.get_type();
+        string y = t.get_value();
+        if(t.get_type()!= "BAD_TOKEN" &&!predictive_parser->has_error)
+            predictive_parser->derive(x,y,out2);
         if(t.get_type() == "END_OF_FILE")break ;
     }
 

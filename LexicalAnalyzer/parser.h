@@ -2,10 +2,13 @@
 #include <set>
 #include <map>
 #include <stack>
+#include <fstream>
 
 class parser
 {
+
 private:
+
     /* a set containing all productions found in the productions file */
     set<production> productions;
 
@@ -28,6 +31,14 @@ private:
     stack<psymbol> follow_toplogical ;
     map<psymbol,set<psymbol>> follow_graph , follow_graph_trans ;
     map<int,set<int>> components_graph ;
+
+    map<pair<psymbol,psymbol> , production > table;/* table used for parsing */
+
+    stack<psymbol> symbols;/* stack to be used in parsing */
+
+    string derived; /* to be returned to be printed */
+
+    int ptr1 = 0,ptr2=0; /* pointer to the string to be derived in the next iteration */
 
     /* General Methods */
     void solve_oring();                           /* Turns A -> B | C into A -> B , A -> C */
@@ -61,8 +72,16 @@ private:
                                                   /* Follow(to) += Follow(from) */
     void dfs_follow( int node );                  /* DFS on the SCC Graph to solve Follow(A) += Follow(B) */
     bool is_visited( psymbol ps );                /* Related to internal calculation of SCC */
+    void make_graph( psymbol ps );
+    void create_table();/* create table to be used in parsing latter */
 
 public:
+
     /* parser constructor */
     parser(string productions_file_name);
+
+    void start(ofstream &out);
+    void derive(string token_type,string token_val, ofstream &out);
+    bool has_error;
+//    creat_first_sets()
 };

@@ -62,14 +62,14 @@
 1458906644 source:c:\users\mohamed\desktop\codes\compilers\statebase.cpp
 	"StateBase.h"
 
-1461181073 source:e:\csed\compilers\compiler-project\lexicalanalyzer\automata.cpp
+1461304926 source:e:\csed\compilers\compiler-project\lexicalanalyzer\automata.cpp
 	"automata.h"
 	<queue>
 	<iostream>
 	<fstream>
 	<sstream>
 
-1461181073 e:\csed\compilers\compiler-project\lexicalanalyzer\automata.h
+1461304926 e:\csed\compilers\compiler-project\lexicalanalyzer\automata.h
 	"state_base.h"
 	"state.h"
 	"multi_state.h"
@@ -82,7 +82,7 @@
 	<set>
 	<string>
 
-1461179721 e:\csed\compilers\compiler-project\lexicalanalyzer\state.h
+1461304926 e:\csed\compilers\compiler-project\lexicalanalyzer\state.h
 	<vector>
 	<string>
 	"state_base.h"
@@ -105,15 +105,19 @@
 1459162247 e:\csed\compilers\compiler-project\lexicalanalyzer\nfatodfa.h
 	"Automata.h"
 
-1461335213 source:e:\csed\compilers\compiler-project\lexicalanalyzer\parser.cpp
+1461947354 source:e:\csed\compilers\compiler-project\lexicalanalyzer\parser.cpp
 	"parser.h"
 	"production_reader.h"
+	<iostream>
 
-1461327094 e:\csed\compilers\compiler-project\lexicalanalyzer\parser.h
+1461947246 e:\csed\compilers\compiler-project\lexicalanalyzer\parser.h
 	"production.h"
 	<set>
+	<map>
+	<stack>
+	<fstream>
 
-1461179792 source:e:\csed\compilers\compiler-project\lexicalanalyzer\state.cpp
+1461304926 source:e:\csed\compilers\compiler-project\lexicalanalyzer\state.cpp
 	"state.h"
 	<queue>
 	<iostream>
@@ -121,13 +125,13 @@
 1461176819 source:e:\csed\compilers\compiler-project\lexicalanalyzer\statebase.cpp
 	"StateBase.h"
 
-1461185953 source:e:\csed\compilers\compiler-project\lexicalanalyzer\main.cpp
+1461304926 source:e:\csed\compilers\compiler-project\lexicalanalyzer\main.cpp
 	"compiler.h"
 
-1461186244 source:e:\csed\compilers\compiler-project\lexicalanalyzer\analyzer.cpp
+1461944895 source:e:\csed\compilers\compiler-project\lexicalanalyzer\analyzer.cpp
 	"analyzer.h"
 
-1461185315 e:\csed\compilers\compiler-project\lexicalanalyzer\analyzer.h
+1461304926 e:\csed\compilers\compiler-project\lexicalanalyzer\analyzer.h
 	"token.h"
 	<fstream>
 	<sstream>
@@ -136,37 +140,37 @@
 	"nfa_to_dfa.h"
 	<iostream>
 
-1461179234 e:\csed\compilers\compiler-project\lexicalanalyzer\token.h
+1461304926 e:\csed\compilers\compiler-project\lexicalanalyzer\token.h
 	<string>
 
-1461179803 source:e:\csed\compilers\compiler-project\lexicalanalyzer\token.cpp
+1461304926 source:e:\csed\compilers\compiler-project\lexicalanalyzer\token.cpp
 	"token.h"
 
-1461178883 source:e:\csed\compilers\compiler-project\lexicalanalyzer\entry.cpp
+1461304926 source:e:\csed\compilers\compiler-project\lexicalanalyzer\entry.cpp
 	"entry.h"
 
-1461178775 e:\csed\compilers\compiler-project\lexicalanalyzer\entry.h
+1461304926 e:\csed\compilers\compiler-project\lexicalanalyzer\entry.h
 	<string>
 	<vector>
 
-1461177999 e:\csed\compilers\compiler-project\lexicalanalyzer\symbol_table.h
+1461304926 e:\csed\compilers\compiler-project\lexicalanalyzer\symbol_table.h
 	"entry.h"
 	<map>
 	<string>
 
-1461179524 source:e:\csed\compilers\compiler-project\lexicalanalyzer\symbol_table.cpp
+1461304926 source:e:\csed\compilers\compiler-project\lexicalanalyzer\symbol_table.cpp
 	"symbol_table.h"
 
 1459183673 e:\csed\compilers\compiler-project\lexicalanalyzer\lexical_analyzer\entry.h
 	<string>
 	<vector>
 
-1461179733 e:\csed\compilers\compiler-project\lexicalanalyzer\regex_reader.h
+1461304926 e:\csed\compilers\compiler-project\lexicalanalyzer\regex_reader.h
 	<fstream>
 	<stack>
 	"automata.h"
 
-1461179263 e:\csed\compilers\compiler-project\lexicalanalyzer\state_base.h
+1461304926 e:\csed\compilers\compiler-project\lexicalanalyzer\state_base.h
 	<map>
 	<map>
 	<set>
@@ -174,10 +178,10 @@
 	<set>
 	<string>
 
-1461181063 e:\csed\compilers\compiler-project\lexicalanalyzer\multi_state.h
+1461304926 e:\csed\compilers\compiler-project\lexicalanalyzer\multi_state.h
 	"state.h"
 
-1461179740 e:\csed\compilers\compiler-project\lexicalanalyzer\nfa_to_dfa.h
+1461304926 e:\csed\compilers\compiler-project\lexicalanalyzer\nfa_to_dfa.h
 	"automata.h"
 
 1461181073 source:e:\csed\compilers\compiler-project\lexicalanalyzer\nfa_2_dfa.cpp
@@ -188,18 +192,18 @@
 	<map>
 	<set>
 
-1461179785 source:e:\csed\compilers\compiler-project\lexicalanalyzer\regex_reader.cpp
+1461304926 source:e:\csed\compilers\compiler-project\lexicalanalyzer\regex_reader.cpp
 	"regex_reader.h"
 	<iostream>
 
-1461179798 source:e:\csed\compilers\compiler-project\lexicalanalyzer\state_base.cpp
+1461304926 source:e:\csed\compilers\compiler-project\lexicalanalyzer\state_base.cpp
 	"state_base.h"
 
-1461181919 source:e:\csed\compilers\compiler-project\lexicalanalyzer\multi_state.cpp
+1461304926 source:e:\csed\compilers\compiler-project\lexicalanalyzer\multi_state.cpp
 	"multi_state.h"
 	<iostream>
 
-1461181073 source:e:\csed\compilers\compiler-project\lexicalanalyzer\nfa_to_dfa.cpp
+1461304926 source:e:\csed\compilers\compiler-project\lexicalanalyzer\nfa_to_dfa.cpp
 	"nfa_to_dfa.h"
 	<queue>
 	<iostream>
@@ -207,36 +211,36 @@
 	<map>
 	<set>
 
-1461327354 source:e:\csed\compilers\compiler-project\lexicalanalyzer\compiler.cpp
+1461938209 source:e:\csed\compilers\compiler-project\lexicalanalyzer\compiler.cpp
 	"compiler.h"
 
-1461327028 e:\csed\compilers\compiler-project\lexicalanalyzer\compiler.h
+1461304926 e:\csed\compilers\compiler-project\lexicalanalyzer\compiler.h
 	"analyzer.h"
 	"symbol_table.h"
 	"parser.h"
 
-1461334282 e:\csed\compilers\compiler-project\lexicalanalyzer\psymbol.h
+1461947269 e:\csed\compilers\compiler-project\lexicalanalyzer\psymbol.h
 	<string>
 
-1461335112 e:\csed\compilers\compiler-project\lexicalanalyzer\production.h
+1461925215 e:\csed\compilers\compiler-project\lexicalanalyzer\production.h
 	"psymbol.h"
 	<vector>
 
-1461334631 e:\csed\compilers\compiler-project\lexicalanalyzer\production_reader.h
+1461793565 e:\csed\compilers\compiler-project\lexicalanalyzer\production_reader.h
 	"production.h"
 	<fstream>
 	<set>
 
-1461337093 source:e:\csed\compilers\compiler-project\lexicalanalyzer\production_reader.cpp
+1461797312 source:e:\csed\compilers\compiler-project\lexicalanalyzer\production_reader.cpp
 	"production_reader.h"
 	<iostream>
 	<sstream>
 
-1461335229 source:e:\csed\compilers\compiler-project\lexicalanalyzer\production.cpp
+1461925132 source:e:\csed\compilers\compiler-project\lexicalanalyzer\production.cpp
 	"production.h"
 	<iostream>
 
-1461335379 source:e:\csed\compilers\compiler-project\lexicalanalyzer\psymbol.cpp
+1461529256 source:e:\csed\compilers\compiler-project\lexicalanalyzer\psymbol.cpp
 	"psymbol.h"
 
 1461301326 source:f:\c problems\codeforces\compilers project\analyzer.cpp

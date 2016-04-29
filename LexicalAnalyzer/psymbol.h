@@ -9,7 +9,8 @@ enum class psymbol_type {
     non_terminal,
     epsilon,
     or_operator,
-    start_dummy
+    start_dummy,
+    synch
 };
 
 class psymbol

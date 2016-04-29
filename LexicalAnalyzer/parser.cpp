@@ -9,6 +9,128 @@ parser::parser(string productions_file_name){
     //Bolbol's section
 
     make_first_follow();
+
+    //Eissa section
+    /* Only will need to use those
+    set<psymbol> get_follow_symbols( psymbol ps );
+    set<pair<psymbol,production>> get_first_sets( psymbol ps );
+    bool is_nullable( psymbol ps );
+    */
+    create_table();
+
+}
+void parser::create_table()
+{
+    for(auto it : first_sets)
+    {
+        psymbol left = it.first;
+        for(auto it2 : it.second )
+        {
+            psymbol tran = it2.first;
+            if(tran.get_type() == psymbol_type::epsilon)
+                continue;
+            production next = it2.second;
+            table[make_pair(left,tran)] = next;
+        }
+        set<psymbol> follow = get_follow_symbols(left);
+        production left_to_eps = production(left,vector<psymbol>(1,psymbol("\\L",psymbol_type::epsilon)));
+        psymbol temp = psymbol("synch",psymbol_type::synch);
+        production synch = production(temp,vector<psymbol>());
+        bool flag = is_nullable(left);
+        for(auto it2: follow)
+        {
+            psymbol tran = it2;
+            if(flag && table.find(make_pair(left,tran))!= table.end())
+                has_error = true;
+            if(flag)
+                table[make_pair(left,tran)] = left_to_eps;
+            else if(table.find(make_pair(left,tran))== table.end())
+                table[make_pair(left,tran)] = synch;
+        }
+    }
+}
+void parser::derive (string token_type , string token_val, ofstream &out)
+{
+    if(symbols.empty())
+    {
+        out << derived+ "       /* token "+ token_val + " is discarded */";
+        return;
+    }
+    bool matched = false;
+    ptr2 = ptr1;
+    while (!matched&& !symbols.empty())
+    {
+        if(ptr2 == ptr1)
+        {
+            while(ptr2 < derived.size() && derived[ptr2]!=' ')
+                ptr2++;
+        }
+        psymbol cur = symbols.top();
+        if(cur.get_type() == psymbol_type::terminal || cur.get_type() == psymbol_type::start_dummy)
+        {
+            if(cur.get_val() != token_type && (cur.get_type() == psymbol_type::start_dummy && token_type !="END_OF_FILE"))
+                out << "/* Error missing "+ cur.get_val() + " ,inserted */"<<endl;
+            else
+            {
+                ptr1 = ptr2+1;
+                matched = true;
+                out <<  "/* Matched "+ cur.get_val() + " with "+ (cur.get_type() == psymbol_type::start_dummy ? "$":token_val) + " */" <<endl;
+            }
+            symbols.pop();
+        }
+        else
+        {
+            psymbol temp = psymbol((token_type=="END_OF_FILE" ? "$": "\'"+token_type+"\'"),(token_type=="END_OF_FILE" ? psymbol_type::start_dummy : psymbol_type::terminal));
+            if(table.find(make_pair(cur,temp)) != table.end())
+            {
+                production prod = table[make_pair(cur,temp)];
+                symbols.pop();
+                if(prod.lhs.get_type() == psymbol_type::synch)
+                {
+                    cout << table[make_pair(cur,temp)].to_string() <<endl;
+                    ptr1 = ptr2+1;
+                    out << "/* Synchronisation happened here due to illegal production for "+ cur.get_val() + " */" <<endl;
+                }
+                else
+                {
+                    if(prod.rhs.size() == 1 && prod.rhs[0].get_val() == "\\L")
+                    {
+                        derived = derived.substr(0,ptr1) + (ptr2+1 >= derived.size()?"" :derived.substr(ptr2+1,derived.size()-ptr2-1));
+                        out <<derived << endl;
+                        ptr2 =ptr1;
+                        continue;
+                    }
+
+                    for(int i = prod.rhs.size()-1 ; i>=0;i--)
+                        symbols.push(prod.rhs[i]);
+                    string der = "";
+                    for(psymbol symbol: prod.rhs)
+                        der+=symbol.get_val() +" ";
+                    derived = derived.substr(0,ptr1) + der +(ptr2+1 >= derived.size()?"" :derived.substr(ptr2+1,derived.size()-ptr2-1));
+                    out << derived <<endl;
+                    ptr2 = ptr1;
+                }
+            }
+            else
+            {
+                out <<"/* Error:(illegal production " << cur.get_val() <<") - discard "+ token_val << " */"<<endl;
+                matched = true;
+            }
+        }
+    }
+}
+void parser::start(ofstream &out)
+{
+    while(!symbols.empty())
+        symbols.pop();
+    psymbol start_symbol = production_reader::get_instance()->get_first_symbol();
+    symbols.push(psymbol("$",psymbol_type::start_dummy));
+    symbols.push(start_symbol);
+    derived = start_symbol.get_val();
+    ptr1 = 0;
+    ptr2 = derived.size()-1;
+    out << derived << endl;
+    return;
 }
 
 void parser::make_first_follow()
@@ -136,7 +258,7 @@ void parser::solve_first_symbol( psymbol left )
                 }
             }//END SWITCH
 
-        }//END NEST FOR
+        }//END NEST FOR //nullable solved = 0
 
         if( local_nullable_test ){
             global_nullable_test = 1 ;
@@ -328,7 +450,7 @@ void parser::add_to_follow_first( psymbol to , psymbol from )
     }
 }
 
-void parser::add_to_follow_follow( int to , int from )//Edited //Comments only
+void parser::add_to_follow_follow( int to , int from )////Edited //Comments only
 {
     set<psymbol> my_set = follow_sets[from];
     for( psymbol ps : my_set ){

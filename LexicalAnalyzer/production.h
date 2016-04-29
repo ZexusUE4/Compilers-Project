@@ -11,6 +11,9 @@ public:
     /* production constructor */
     production(psymbol lhs, vector<psymbol> rhs);
 
+    /* default constructor */
+    production();
+
     /* Operator < overloading */
 	bool operator<(const production &b) const;
 
@@ -26,4 +29,6 @@ public:
 
     vector<psymbol> get_rhs() const ;
     psymbol get_lhs() const ;
+
+
 };
