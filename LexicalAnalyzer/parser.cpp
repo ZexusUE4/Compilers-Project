@@ -6,16 +6,11 @@ parser::parser(string productions_file_name){
     productions = production_reader::get_instance()->read(productions_file_name);
     solve_oring();
 
-    //Bolbol's section
-
+    eliminate_LR();
+    left_factoring();
+    productions = adjust_production_set();
     make_first_follow();
 
-    //Eissa section
-    /* Only will need to use those
-    set<psymbol> get_follow_symbols( psymbol ps );
-    set<pair<psymbol,production>> get_first_sets( psymbol ps );
-    bool is_nullable( psymbol ps );
-    */
     create_table();
 
 }
@@ -575,5 +570,230 @@ void parser::print_parse_table(){
     }
 }
 
+set<production> parser::adjust_production_set()
+{
+    set<production> ret;
+    for(pair<psymbol, vector<vector<psymbol>>> e : productions_graph)
+    {
+        for(int i= 0; i< e.second.size(); i++)
+        {
+            production p= production(e.first, e.second[i]);
+            ret.insert(p);
+        }
+    }
+    return ret;
+}
+
+void parser::eliminate_immediate_LR(psymbol lhs)
+{
+    psymbol lhs_LR= psymbol(lhs.get_val() + "\'", lhs.get_type());
+
+    vector<vector<psymbol>> rhs= productions_graph[lhs];
+    vector<vector<psymbol>> new_rhs;
+    vector<vector<psymbol>> new_rhs_LR;
+    for(int i= 0; i< rhs.size(); i++)
+    {
+        if(rhs[i][0].get_val() != lhs.get_val())
+        {
+            vector<psymbol> curr_beta;
+            for(int j= 0; j< rhs[i].size(); j++)
+            {
+                if(rhs[i][j].get_type() == psymbol_type::epsilon) continue;
+                curr_beta.push_back(rhs[i][j]);
+            }
+            if(curr_beta.empty()) continue;
+            curr_beta.push_back(lhs_LR);
+            new_rhs.push_back(curr_beta);
+        }
+        else
+        {
+            vector<psymbol> curr_alpha;
+            for(int j= 1; j< rhs[i].size(); j++){
+                if(rhs[i][j].get_type() == psymbol_type::epsilon) continue;
+                curr_alpha.push_back(rhs[i][j]);
+            }
+            if(curr_alpha.empty()) continue;
+            curr_alpha.push_back(lhs_LR);
+            new_rhs_LR.push_back(curr_alpha);
+        }
+    }
+    if(new_rhs_LR.size())
+    {
+        psymbol eps = psymbol("\\L",psymbol_type::epsilon);
+        vector<psymbol> last;
+        last.push_back(eps);
+        new_rhs_LR.push_back(last);
+        productions_graph[lhs]= new_rhs;
+        productions_graph[lhs_LR]= new_rhs_LR;
+    }
+}
+
+void parser::eliminate_LR()
+{
+    set<psymbol> visited_productions;
+    int counter= 0;
+    for(pair<psymbol, vector<vector<psymbol>>> e : productions_graph)
+    {
+        bool is_recursive= true;
+        int counter= 0;
+        while(is_recursive)
+        {
+            is_recursive= false;
+            for(int i= 0; i< e.second.size(); i++)
+            {
+                if(visited_productions.find(e.second[i][0]) != visited_productions.end())
+                {
+
+                    vector<vector<psymbol>> found_production= productions_graph[e.second[i][0]];
+                    vector<psymbol> top;
+                    for(int j= 0; j< found_production.size(); j++)
+                    {
+                        vector<psymbol> curr_production;
+                        for(int k= 0; k< found_production[j].size(); k++)
+                        {
+                            if(found_production[j][k].get_type() == psymbol_type::epsilon) continue;
+                            curr_production.push_back(found_production[j][k]);
+                        }
+                        for(int k= 1; k< e.second[i].size(); k++)
+                        {
+                            if(e.second[i][k].get_type()== psymbol_type::epsilon) continue;
+                            curr_production.push_back(e.second[i][k]);
+                        }
+                        if(curr_production.empty())
+                            curr_production.push_back(psymbol("\\L", psymbol_type::epsilon));
+
+                        if(j == 0) top= curr_production;
+                        else e.second.push_back(curr_production);
+                        is_recursive= true;
+                    }
+                    e.second[i]= top;
+                }
+            }
+        }
+        visited_productions.insert(e.first);
+        productions_graph[e.first]= e.second;
+        eliminate_immediate_LR(e.first);
+    }
+}
+
+void parser::left_factoring()
+{
+    psymbol new_prod;
+    map<psymbol, vector<vector<psymbol>>> tmp= productions_graph;
+    bool rerun= true;
+    while(rerun){
+        rerun= false;
+        for(pair<psymbol, vector<vector<psymbol>>> e : tmp)
+        {
+            int counter= 0;
+            do
+            {
+                counter++;
+                productions_graph[e.first]= e.second;
+                new_prod= psymbol(e.first.get_val() + dot_creator(counter), psymbol_type::non_terminal);
+            }while(get_longest_common_prefix(e.second, new_prod));
+            rerun |= (counter>1);
+        }
+        tmp= productions_graph;
+    }
+}
+
+string parser::dot_creator(int num)
+{
+    string str= "";
+    for(int i= 0; i< num; i++) str+= '.';
+    return str;
+}
+
+bool parser::get_longest_common_prefix(vector<vector<psymbol>> &v_v, psymbol new_prod)
+{
+    bool is_longest= false;
+    int ind= 0;
+    vector<int> curr_prefix;
+    vector<int> vec= match_first_letter(v_v);
+
+    int counter= 0;
+    while(1)
+    {
+        if(vec.empty()) break;
+        is_longest= false;
+        for(int i= 0; i< vec.size(); i++)
+        {
+            for(int j= i+1; j< vec.size(); j++)
+            {
+                if(ind==v_v[vec[i]].size() || v_v[vec[i]][ind].get_val()!=v_v[vec[j]][ind].get_val())
+                {
+                    is_longest= true;
+                    break;
+                }
+            }
+            if(is_longest) break;
+        }
+        if(is_longest) break;
+        ind++;
+    }
+
+    if(is_longest)
+    {
+        remove_common_factor(ind, vec, v_v, new_prod);
+    }
+    return is_longest;
+}
+
+void parser::remove_common_factor(int prefix_sz, vector<int> const &vec,
+                                  vector<vector<psymbol>> &v_v, psymbol new_prod)
+{
+    vector<psymbol> common_prefix;
+    for(int i= 0; i< prefix_sz; i++)
+    {
+        common_prefix.push_back(v_v[vec[0]][i]);
+    }
+    common_prefix.push_back(new_prod);
+
+    vector<vector<psymbol>> new_prod_v_v;
+    for(int i= 0; i< vec.size(); i++)
+    {
+        vector<psymbol> curr;
+        if(prefix_sz == v_v[vec[i]].size()) curr.push_back(psymbol("\\L", psymbol_type::epsilon));
+        for(int j= prefix_sz; j< v_v[vec[i]].size(); j++)
+        {
+            curr.push_back(v_v[vec[i]][j]);
+        }
+        new_prod_v_v.push_back(curr);
+    }
+
+    vector<vector<psymbol>> tmp;
+    int ind= 0;
+    for(int i= 0; i< v_v.size(); i++)
+    {
+        if(i == vec[ind])
+        {
+            ind++;
+            continue;
+        }
+        tmp.push_back(v_v[i]);
+    }
+
+    v_v= tmp;
+    v_v.push_back(common_prefix);
+
+    productions_graph[new_prod]= new_prod_v_v;
+}
+
+vector<int> parser::match_first_letter(vector<vector<psymbol>> const &v_v)
+{
+    vector<int> ret;
+    for(int i= 0; i< v_v.size(); i++)
+    {
+        ret.push_back(i);
+        for(int j= i+1; j< v_v.size(); j++)
+        {
+            if(v_v[i][0].get_val() == v_v[j][0].get_val()) ret.push_back(j);
+        }
+        if(ret.size() > 1) return ret;
+        else ret.clear();
+    }
+    return ret;
+}
 
 

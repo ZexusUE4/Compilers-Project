@@ -75,6 +75,16 @@ private:
     void make_graph( psymbol ps );
     void create_table();/* create table to be used in parsing latter */
 
+    void eliminate_LR();
+    void eliminate_immediate_LR(psymbol p);
+    void left_factoring();
+    bool get_longest_common_prefix(vector<vector<psymbol>> &v_v, psymbol new_prod);
+    vector<int> match_first_letter(vector<vector<psymbol>> const &v_v);
+    void remove_common_factor(int prefix_sz, vector<int> const &vec,
+                              vector<vector<psymbol>> &v_v, psymbol new_prod);
+    set<production> adjust_production_set();
+    string dot_creator(int num);
+
 public:
 
     /* parser constructor */
