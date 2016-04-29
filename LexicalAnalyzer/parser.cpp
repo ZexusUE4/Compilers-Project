@@ -9,14 +9,6 @@ parser::parser(string productions_file_name){
     //Bolbol's section
 
     make_first_follow();
-
-    //Eissa section
-    /* Only will need to use those
-    set<psymbol> get_follow_symbols( psymbol ps );
-    set<pair<psymbol,production>> get_first_sets( psymbol ps );
-    bool is_nullable( psymbol ps );
-    */
-
 }
 
 void parser::make_first_follow()
@@ -121,7 +113,7 @@ void parser::solve_first_symbol( psymbol left )
                 }
                 case psymbol_type::epsilon :{
                     local_nullable_test = 1 ;
-                    solved = 1 ;
+                    solved = 1 ;///HERE
                     break ;
                 }
                 case psymbol_type::non_terminal :{
@@ -131,12 +123,12 @@ void parser::solve_first_symbol( psymbol left )
                     set<pair<psymbol,production>> temp = first_sets[ps] ;
                     set<pair<psymbol,production>>::iterator it = temp.begin();
                     while(it!=temp.end()){
-                        if( it->first.get_type() == psymbol_type::terminal ){
+                        if( it->first.get_type() == psymbol_type::terminal ){//First(A) = First(B) - eps
                             first_sets[left].insert(make_pair(it->first,production(left,adj[i])));
                         }
                         ++it ;
                     }
-                    if( !is_nullable(ps) ){
+                    if( !is_nullable(ps) ){//IF B is not nullable , we're done
                         solved = 1 ;
                         local_nullable_test = 0 ;
                     }
@@ -144,7 +136,7 @@ void parser::solve_first_symbol( psymbol left )
                 }
             }//END SWITCH
 
-        }//END NEST FOR //nullable solved = 0
+        }//END NEST FOR
 
         if( local_nullable_test ){
             global_nullable_test = 1 ;
@@ -234,7 +226,7 @@ void parser::create_components()
             ++components_cnt ;
         }
     }
-    visited.clear();
+    visited.clear();/* To free un needed memory */
 
     map<psymbol,set<psymbol>>::iterator it = follow_graph.begin();
     while(it != follow_graph.end()){
@@ -312,7 +304,7 @@ void parser::scc_pass2( psymbol s )
 vector<psymbol> parser::get_first_sets_symbols( psymbol ps )
 {
     vector<psymbol> ret ;
-    if( ps.get_type() == psymbol_type::terminal ){
+    if( ps.get_type() == psymbol_type::terminal || ps.get_type() == psymbol_type::epsilon ){
         ret.push_back(ps);
     }
     else{
@@ -332,15 +324,15 @@ void parser::add_to_follow_first( psymbol to , psymbol from )
     vector<psymbol> first_set = get_first_sets_symbols(from);
     for( psymbol ps : first_set ){
         if(ps.get_type() != psymbol_type::epsilon)
-            follow_sets[component[to]].insert(ps);
+            follow_sets[component[to]].insert(ps);//Follow(to) += ( First(from) - eps )
     }
 }
 
-void parser::add_to_follow_follow( int to , int from )//add from 'from' to 'to'
+void parser::add_to_follow_follow( int to , int from )//Edited //Comments only
 {
     set<psymbol> my_set = follow_sets[from];
     for( psymbol ps : my_set ){
-        follow_sets[to].insert(ps);
+        follow_sets[to].insert(ps);//Follow(to) += Follow(from)
     }
 }
 
@@ -359,7 +351,7 @@ void parser::solve_follow_sets()
         vector<psymbol> rhs = p.get_rhs();
         for(int i = 0 ; i < rhs.size() ; ++i){
             if( rhs[i].get_type() == psymbol_type::non_terminal ){
-                for(int j = i+1 ; j < rhs.size() ; ++j){
+                for(int j = i+1 ; j < rhs.size() ; ++j){//BUG
                     add_to_follow_first(rhs[i],rhs[j]);
                     if( !is_nullable(rhs[j]) ){
                         break ;
