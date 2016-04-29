@@ -30,6 +30,7 @@ public:
     psymbol();
 
     string get_val() const ;
+    string get_html_val() const;
     psymbol_type get_type() const ;
 
     bool operator<(const psymbol &b) const;

@@ -83,5 +83,8 @@ public:
     void start(ofstream &out);
     void derive(string token_type,string token_val, ofstream &out);
     bool has_error;
+
+    /* Prints the parse table into an html file */
+    void print_parse_table();
 //    creat_first_sets()
 };

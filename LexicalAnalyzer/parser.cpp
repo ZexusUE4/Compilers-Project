@@ -130,6 +130,8 @@ void parser::start(ofstream &out)
     ptr1 = 0;
     ptr2 = derived.size()-1;
     out << derived << endl;
+
+    print_parse_table();
     return;
 }
 
@@ -543,12 +545,35 @@ void parser::print_follow_sets()
     }
 }
 
+void parser::print_parse_table(){
+    set<psymbol> non_terminals;
+    set<psymbol> terminals;
 
+    for(auto it = table.begin();it != table.end(); it++){
+        terminals.insert(it->first.first);
+        non_terminals.insert(it->first.second);
+    }
+    fstream file;
+    file.open("parse_table.html", ifstream::out);
 
+    file << "<!DOCTYPE html><html><body><table style=\"width:100%\" border=\"3\">";
 
+    file << "<thead>";
+    file << "<th bgcolor=\"##6699ff\"> Production </th>";
+    for(psymbol p : non_terminals){
+        file << "<th bgcolor=\"##6699ff\">" << p.get_val() << "</th>";
+    }
+    file << "</thead>";
 
-
-
+    for(psymbol p: terminals){
+        file << "<tr><td align=\"center\" bgcolor=\"##6699ff\">" << p.get_val() << "</td>";
+        for(psymbol n: non_terminals){
+            production prod = table[make_pair(p,n)];
+            file << "<td align=\"center\">" << prod.to_html_string() << "</td>";
+        }
+        file << "</tr>";
+    }
+}
 
 
 

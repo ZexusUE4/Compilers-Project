@@ -20,6 +20,7 @@ public:
     /* prints the production */
     void print_production();
     string to_string();
+    string to_html_string();
 
     /* left hand side of the production, must be a non-terminal */
     psymbol lhs;

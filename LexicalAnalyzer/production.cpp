@@ -39,6 +39,23 @@ string production::to_string()
     return ret ;
 }
 
+string production::to_html_string(){
+    if(!lhs.get_val().size()){
+        return "ERROR";
+    }
+    else if(lhs.get_type() == psymbol_type::synch){
+        return "SYNCH";
+    }
+    else{
+        string ret = lhs.get_val() ;
+        ret += " &#x2192 ";
+        for(psymbol ps : rhs){
+            ret += ps.get_html_val();
+            ret += " ";
+        }
+        return ret;
+    }
+}
 vector<psymbol> production::get_rhs() const
 {
     return rhs ;
