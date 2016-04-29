@@ -60,8 +60,9 @@ void parser::derive (string token_type , string token_val, ofstream &out)
     ptr2 = ptr1;
     while (!matched&& !symbols.empty())
     {
-        if(ptr2 == ptr1)
+        if(ptr2 <= ptr1)
         {
+            ptr2 = ptr1 ;
             while(ptr2 < derived.size() && derived[ptr2]!=' ')
                 ptr2++;
         }
@@ -70,12 +71,12 @@ void parser::derive (string token_type , string token_val, ofstream &out)
         {
             if(cur.get_val() == token_type || (cur.get_type() == psymbol_type::start_dummy && token_type =="END_OF_FILE"))
             {
-                ptr1 = ptr2+1;
                 matched = true;
                 out <<  "/* Matched "+ cur.get_val() + " with "+ (cur.get_type() == psymbol_type::start_dummy ? "$":token_val) + " */" <<endl;
             }
             else
                 out << "/* Error missing "+ cur.get_val() + " ,inserted */"<<endl;
+            ptr1 = ptr2+1;
             symbols.pop();
         }
         else
@@ -87,7 +88,6 @@ void parser::derive (string token_type , string token_val, ofstream &out)
                 symbols.pop();
                 if(prod.lhs.get_type() == psymbol_type::synch)
                 {
-                    cout << table[make_pair(cur,temp)].to_string() <<endl;
                     ptr1 = ptr2+1;
                     out << "/* Synchronisation happened here due to illegal production for "+ cur.get_val() + " */" <<endl;
                 }
