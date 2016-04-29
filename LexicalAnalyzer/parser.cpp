@@ -68,14 +68,14 @@ void parser::derive (string token_type , string token_val, ofstream &out)
         psymbol cur = symbols.top();
         if(cur.get_type() == psymbol_type::terminal || cur.get_type() == psymbol_type::start_dummy)
         {
-            if(cur.get_val() != token_type && (cur.get_type() == psymbol_type::start_dummy && token_type !="END_OF_FILE"))
-                out << "/* Error missing "+ cur.get_val() + " ,inserted */"<<endl;
-            else
+            if(cur.get_val() == token_type || (cur.get_type() == psymbol_type::start_dummy && token_type =="END_OF_FILE"))
             {
                 ptr1 = ptr2+1;
                 matched = true;
                 out <<  "/* Matched "+ cur.get_val() + " with "+ (cur.get_type() == psymbol_type::start_dummy ? "$":token_val) + " */" <<endl;
             }
+            else
+                out << "/* Error missing "+ cur.get_val() + " ,inserted */"<<endl;
             symbols.pop();
         }
         else

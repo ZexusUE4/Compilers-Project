@@ -105,7 +105,7 @@
 1459162247 e:\csed\compilers\compiler-project\lexicalanalyzer\nfatodfa.h
 	"Automata.h"
 
-1461950866 source:e:\csed\compilers\compiler-project\lexicalanalyzer\parser.cpp
+1461952317 source:e:\csed\compilers\compiler-project\lexicalanalyzer\parser.cpp
 	"parser.h"
 	"production_reader.h"
 	<iostream>
@@ -240,7 +240,7 @@
 	"production.h"
 	<iostream>
 
-1461952094 source:e:\csed\compilers\compiler-project\lexicalanalyzer\psymbol.cpp
+1461955627 source:e:\csed\compilers\compiler-project\lexicalanalyzer\psymbol.cpp
 	"psymbol.h"
 
 1461301326 source:f:\c problems\codeforces\compilers project\analyzer.cpp

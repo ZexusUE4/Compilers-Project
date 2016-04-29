@@ -15,11 +15,6 @@ psymbol::psymbol(){
 
 string psymbol::get_val() const
 {
-    if(value == "\\L"){
-        string eps;
-        eps += (char)238;
-        return eps;
-    }
     return value ;
 }
 
