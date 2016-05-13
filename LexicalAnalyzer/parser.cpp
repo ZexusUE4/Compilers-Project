@@ -5,15 +5,15 @@
 parser::parser(string productions_file_name){
     productions = production_reader::get_instance()->read(productions_file_name);
     solve_oring();
-
-    eliminate_LR();
-    left_factoring();
+    code_gen = new code_generator();
+    //eliminate_LR();
+    //left_factoring();
     productions = adjust_production_set();
     make_first_follow();
 
     create_table();
-
 }
+
 void parser::create_table()
 {
     for(auto it : first_sets)
@@ -61,13 +61,19 @@ void parser::derive (string token_type , string token_val, ofstream &out)
             while(ptr2 < derived.size() && derived[ptr2]!=' ')
                 ptr2++;
         }
-        psymbol cur = symbols.top();
+
+        code_gen->check_for_call_backs(symbols.size());
+        psymbol cur = *(symbols.top());
+        psymbol* curRef = symbols.top();
+
         if(cur.get_type() == psymbol_type::terminal || cur.get_type() == psymbol_type::start_dummy)
         {
             if(cur.get_val() == token_type || (cur.get_type() == psymbol_type::start_dummy && token_type =="END_OF_FILE"))
             {
                 matched = true;
                 out <<  "/* Matched "+ cur.get_val() + " with "+ (cur.get_type() == psymbol_type::start_dummy ? "$":token_val) + " */" <<endl;
+                curRef->set_lexeme_type(token_type);
+                curRef->set_val(token_val);
             }
             else
                 out << "/* Error missing "+ cur.get_val() + " ,inserted */"<<endl;
@@ -76,7 +82,7 @@ void parser::derive (string token_type , string token_val, ofstream &out)
         }
         else
         {
-            psymbol temp = psymbol((token_type=="END_OF_FILE" ? "$": "\'"+token_type+"\'"),(token_type=="END_OF_FILE" ? psymbol_type::start_dummy : psymbol_type::terminal));
+            psymbol temp = psymbol((token_type=="END_OF_FILE" ? "$": "\'"+token_type+"\'"),token_type,(token_type=="END_OF_FILE" ? psymbol_type::start_dummy : psymbol_type::terminal));
             if(table.find(make_pair(cur,temp)) != table.end())
             {
                 production prod = table[make_pair(cur,temp)];
@@ -96,14 +102,21 @@ void parser::derive (string token_type , string token_val, ofstream &out)
                         continue;
                     }
 
-                    for(int i = prod.rhs.size()-1 ; i>=0;i--)
-                        symbols.push(prod.rhs[i]);
+                    for(int i = prod.rhs.size()-1 ; i>=0;i--){
+                        psymbol* child = new psymbol();
+                        *child = prod.rhs[i];
+                        child->parent = curRef;
+                        curRef->childs.push_back(child);
+                        code_gen->register_call_back(symbols.size(),child);
+                        symbols.push(child);
+                    }
                     string der = "";
                     for(psymbol symbol: prod.rhs)
                         der+=symbol.get_val() +" ";
                     derived = derived.substr(0,ptr1) + der +(ptr2+1 >= derived.size()?"" :derived.substr(ptr2+1,derived.size()-ptr2-1));
                     out << derived <<endl;
                     ptr2 = ptr1;
+                    curRef->pre_call(curRef);
                 }
             }
             else
@@ -119,8 +132,10 @@ void parser::start(ofstream &out)
     while(!symbols.empty())
         symbols.pop();
     psymbol start_symbol = production_reader::get_instance()->get_first_symbol();
-    symbols.push(psymbol("$",psymbol_type::start_dummy));
-    symbols.push(start_symbol);
+    psymbol* startRef = new psymbol();
+    *startRef = start_symbol;
+    symbols.push(new psymbol("$","$",psymbol_type::start_dummy));
+    symbols.push(startRef);
     derived = start_symbol.get_val();
     ptr1 = 0;
     ptr2 = derived.size()-1;
@@ -137,11 +152,11 @@ void parser::make_first_follow()
 
     print_productions();
     cout<<endl;
-    print_first_sets();
-    cout<<endl;
-    print_components();
-    cout<<endl;
-    print_follow_sets();
+//    print_first_sets();
+//    cout<<endl;
+//    print_components();
+//    cout<<endl;
+//    print_follow_sets();
 }
 
 void parser::print_productions()
@@ -264,7 +279,7 @@ void parser::solve_first_symbol( psymbol left )
 
     if( global_nullable_test ){
         nullable.insert(left);
-        psymbol eps = psymbol("\\L",psymbol_type::epsilon) ;
+        psymbol eps = psymbol("\\L","epsilon",psymbol_type::epsilon) ;
         vector<psymbol> rhs ;
         rhs.push_back(eps);
         production left_to_eps = production(left,rhs);
@@ -460,7 +475,7 @@ void parser::solve_follow_sets()
     create_follow_graphs();
     create_components();
 
-    psymbol dummy = psymbol("$",psymbol_type::start_dummy);//marks EOF
+    psymbol dummy = psymbol("$","$",psymbol_type::start_dummy);//marks EOF
     psymbol start_symbol = production_reader::get_instance()->get_first_symbol();
 
     follow_sets[component[start_symbol]].insert(dummy);// Add $ to Follow(S)
@@ -563,7 +578,10 @@ void parser::print_parse_table(){
     for(psymbol p: terminals){
         file << "<tr><td align=\"center\" bgcolor=\"##6699ff\">" << p.get_val() << "</td>";
         for(psymbol n: non_terminals){
-            production prod = table[make_pair(p,n)];
+            production prod;
+            if(table.find(make_pair(p,n)) != table.end()){
+                prod = table[make_pair(p,n)];
+            }
             file << "<td align=\"center\">" << prod.to_html_string() << "</td>";
         }
         file << "</tr>";

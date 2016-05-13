@@ -17,11 +17,13 @@ class entry
         void set_type( string typ );
         void set_info( string inf );
         void add_extra_value( string val );
+        void set_symbol_pointer(int val);
 
         string get_lexeme();
         string get_type();
         string get_info();
         string get_extra( int pos );
+        int get_symbol_pointer();
         int size_of_extra();
 
         bool operator <( const entry& e ) const;
@@ -30,6 +32,7 @@ class entry
         string lexeme ;          /* The extracted string itself */
         string type ;            /* Lexical type */
         string info ;            /* Extra essential info value */
+        int symbol_pointer;
         vector<string> extra ;   /* Dynamic memory for any extra values */
 };
 

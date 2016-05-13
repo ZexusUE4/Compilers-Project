@@ -40,7 +40,6 @@ set<production> production_reader::read(string file_name){
 
             prev = parse_line_to_prodcution(line);
 
-
         }
         else{
             vector<psymbol> splitted = space_splitted(line);
@@ -70,7 +69,16 @@ vector<psymbol> production_reader::space_splitted(string str){
         string t;
         ss >> t;
 
-        if(t.size()){
+        if(is_semantic_func(t)){
+            if(tokens.size() != 3){
+                tokens[tokens.size()-1].call_back = semantic_functions::get_call_back_of_name(t.substr(1,t.size()-2));
+            }
+            else
+            {
+                tokens[1].pre_call = semantic_functions::get_call_back_of_name(t.substr(1,t.size()-2));
+            }
+        }
+        else if(t.size()){
             tokens.push_back(psymbol(t,get_psymbol_type(t)));
         }
     }
@@ -97,4 +105,10 @@ bool production_reader::is_new_production(string line){
     while(line[i] == ' ') i++;
 
     return line[i] == '#';
+}
+
+bool production_reader::is_semantic_func(string str){
+    if(str[0] == '{' && str[str.size()-1] == '}')
+        return true;
+    return false;
 }

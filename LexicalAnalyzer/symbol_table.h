@@ -13,13 +13,21 @@ class symbol_table
         symbol_table();
         virtual ~symbol_table();
 
-        void add( string lexeme , entry value );
-        entry get( string lexeme );
+        void add( string lexeme , entry* value );
+        entry* get_entry( string lexeme );
         bool exists( string lexeme );
+        bool exists_last_scope( string lexeme );
+        int get_symbol_pointer(string lexeme);
 
-        entry& operator[]( const string& lexeme);
+        void enter_scope();
+        void exit_scope();
+
+        int operator[]( const string& lexeme);
+
+        void print();
     private:
-        map<string,entry> table ;
+        vector<map<string,entry*>> table ;
+        int table_counter;
 };
 
 #endif // SYMBOL_TABLE_H

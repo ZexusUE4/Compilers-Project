@@ -15,4 +15,3 @@ string token::get_value()
 {
     return value ;
 }
-

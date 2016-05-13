@@ -79,8 +79,6 @@ bool compiler::local_set( string str )
 int compiler::start_compilation(){
 
     lex_analyzer->start();
-    sym_table  = new symbol_table();
-
     ofstream out("out.txt");
     ofstream out2("derivation.txt");
     predictive_parser->start(out2);
@@ -94,9 +92,7 @@ int compiler::start_compilation(){
 
     while(true){
         token t = lex_analyzer->get_token();
-        if( !sym_table->exists(t.get_value()) ){//still work to be done here
-            sym_table->add(t.get_value(),entry(t.get_value(),t.get_type()));
-        }
+
         out<<t.get_type()<<endl;
         string x = t.get_type();
         string y = t.get_value();

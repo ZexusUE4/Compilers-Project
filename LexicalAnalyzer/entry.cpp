@@ -64,22 +64,17 @@ int entry::size_of_extra()
 
 bool entry::operator <( const entry& e ) const
 {
-    if( lexeme == e.lexeme ){
-        if( type == e.type ){
-            if( info == e.info ){
-                return extra < e.extra ;
-            }
-            else{
-                return info < e.info ;
-            }
-        }
-        else{
-            return type < e.type ;
-        }
-    }
-    else{
-        return lexeme < e.lexeme ;
-    }
+    return this->symbol_pointer < e.symbol_pointer;
+}
+
+void entry::set_symbol_pointer(int val)
+{
+    symbol_pointer = val;
+}
+
+int entry::get_symbol_pointer()
+{
+    return symbol_pointer;
 }
 
 

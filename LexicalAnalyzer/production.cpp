@@ -18,24 +18,21 @@ bool production::operator<(const production & b) const{
 }
 
 void production::print_production(){
-    cout << lhs.get_val() << " " << "---> ";
-
-    for(psymbol ps : rhs){
-        cout << ps.get_val() << " ";
-    }
-    cout << endl;
+    cout << to_string() << endl;
 }
 
 string production::to_string()
 {
-    string ret = lhs.get_val() ;
-    ret += " ---> " ;
+    string ret = "# " + lhs.get_val() ;
+    ret += " = " ;
 
     for(psymbol ps : rhs){
-        ret += ps.get_val();
+        if(ps.get_type() == psymbol_type::terminal)
+            ret += '\'' + ps.get_val() + '\'';
+        else
+            ret += ps.get_val();
         ret += " ";
     }
-
     return ret ;
 }
 

@@ -1,10 +1,2 @@
-int x;
-x = 5;
-if (x > 2)
-{
- x = 0;
-}
-else
-{
- x = 12;
-}
+int var1;
+float f2;

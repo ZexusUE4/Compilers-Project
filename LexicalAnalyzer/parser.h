@@ -1,3 +1,5 @@
+#pragma once
+#include "code_generator.h"
 #include "production.h"
 #include <set>
 #include <map>
@@ -34,7 +36,7 @@ private:
 
     map<pair<psymbol,psymbol> , production > table;/* table used for parsing */
 
-    stack<psymbol> symbols;/* stack to be used in parsing */
+    stack<psymbol*> symbols;/* stack to be used in parsing */
 
     string derived; /* to be returned to be printed */
 
@@ -93,7 +95,7 @@ public:
     void start(ofstream &out);
     void derive(string token_type,string token_val, ofstream &out);
     bool has_error;
-
+    code_generator* code_gen;
     /* Prints the parse table into an html file */
     void print_parse_table();
 //    creat_first_sets()

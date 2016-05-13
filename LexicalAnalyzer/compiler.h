@@ -37,9 +37,6 @@ class compiler
     /* A reference to the predictive parser used by the compiler */
     parser* predictive_parser;
 
-    /* symbol table */
-    symbol_table* sym_table;
-
     /* Checks if the file name passed references a valid file */
     bool is_valid_file( string fname );
 

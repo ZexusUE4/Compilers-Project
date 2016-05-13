@@ -1,6 +1,7 @@
 #ifndef TOKEN_H
 #define TOKEN_H
 
+#include<map>
 #include <string>
 
 using namespace std ;
@@ -11,11 +12,12 @@ class token
         token( string type , string value );
 
         string get_type();
+        int get_type_id();
         string get_value();
+
     private:
         /* The type of the token */
-        string type ;
-
+        string type;
         /* The value of the token */
         string value ;
 };

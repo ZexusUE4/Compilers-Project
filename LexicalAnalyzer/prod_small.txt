@@ -1,0 +1,5 @@
+# S = T 'id' {func1} L
+# T = 'int' {int_type}
+# T = 'float' {float_type}
+# L = 'id' {func2} L 
+# L = \L

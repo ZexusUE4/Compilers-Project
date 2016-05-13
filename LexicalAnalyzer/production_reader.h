@@ -1,6 +1,7 @@
 #include "production.h"
 #include <fstream>
 #include <set>
+#include "semantic_functions.h"
 
 class production_reader
 {
@@ -23,6 +24,9 @@ private:
 
     /* checks if this line defines a new production or to continue the previous production */
     bool is_new_production(string str);
+
+    /* checks if this string is a semantic function */
+    bool is_semantic_func(string str);
 
     /* splits the given string on the space */
     vector<psymbol> space_splitted(string str);

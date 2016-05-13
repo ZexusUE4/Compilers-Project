@@ -1,0 +1,3 @@
+# S = T {func1} 'id' L
+# T = 'int' {func2} | 'real'
+# L = 'id' L {func3} | \L
