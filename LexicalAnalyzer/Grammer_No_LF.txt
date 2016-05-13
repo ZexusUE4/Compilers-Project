@@ -1,5 +1,5 @@
 # METHOD_BODY = {new_scope} STATEMENT_LIST {exit_scope}
-# ASSIGNMENT = 'id' 'assign' EXPRESSION ';'
+# ASSIGNMENT = 'id' 'assign' EXPRESSION ';' {assignment}
 # EXPRESSION = SIMPLE_EXPRESSION EXPRESSION.
 # EXPRESSION. = \L
 # EXPRESSION. = 'relop' SIMPLE_EXPRESSION

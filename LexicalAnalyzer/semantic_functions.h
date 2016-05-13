@@ -23,5 +23,5 @@ public:
     static void new_scope(psymbol *p);
     static void exit_scope(psymbol *p);
     static void declare(psymbol *p);
-
+    static void assignment(psymbol*);
 };
