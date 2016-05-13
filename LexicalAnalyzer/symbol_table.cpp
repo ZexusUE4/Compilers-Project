@@ -75,11 +75,11 @@ void symbol_table::print()
             to_print.insert(make_pair(it->second->get_symbol_pointer(),*(it->second)));
         }
     }
-    cout << "Symbol table exiting scope..\n";
     cout << "sym_ptr\tlexeme\ttype\n";
     for(auto it = to_print.begin(); it != to_print.end();it++){
         cout << it->first << "\t" << it->second.get_lexeme() << "\t" << it->second.get_type() << endl;
     }
+    cout << "Symbol table: exiting scope..\n";
 }
 
 
