@@ -102,5 +102,6 @@ int compiler::start_compilation(){
     }
 
     out.close();
+    code_generator::instance()->commit_code();
     return 0;
 }

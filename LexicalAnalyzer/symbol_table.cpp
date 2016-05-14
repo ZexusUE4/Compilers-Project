@@ -65,6 +65,11 @@ void symbol_table::exit_scope()
     table.pop_back();
 }
 
+int symbol_table::get_table_counter()
+{
+    return table_counter;
+}
+
 
 void symbol_table::print()
 {

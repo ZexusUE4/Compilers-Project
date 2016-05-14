@@ -18,7 +18,10 @@ struct psymbol_data
 {
     int int_val;
     float float_val;
+    int next_addr;
     string type;
+    vector<int>* trueList;
+    vector<int>* falseList;
 };
 
 class psymbol

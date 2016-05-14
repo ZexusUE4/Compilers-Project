@@ -25,6 +25,8 @@ class symbol_table
         int operator[]( const string& lexeme);
 
         void print();
+
+        int get_table_counter();
     private:
         vector<map<string,entry*>> table ;
         int table_counter;
