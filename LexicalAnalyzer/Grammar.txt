@@ -7,6 +7,7 @@
 | WHILE
 | ASSIGNMENT
 
+ | FOR
 # DECLARATION = PRIMITIVE_TYPE 'id' ';'
 
 # PRIMITIVE_TYPE = 'int' | 'float'
@@ -27,3 +28,4 @@
 # FACTOR = 'id' | 'num' | '(' EXPRESSION ')'
 
 # SIGN = '+' | '-'
+# FOR = 'for' '(' ASSIGNMENT ';' EXPRESSION ';' ASSIGNMENT ')' '{' STATEMENT_LIST '}'

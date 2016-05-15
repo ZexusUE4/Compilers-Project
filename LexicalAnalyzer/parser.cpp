@@ -6,8 +6,8 @@ parser::parser(string productions_file_name){
     productions = production_reader::get_instance()->read(productions_file_name);
     solve_oring();
     code_gen = code_generator::instance();
-    //eliminate_LR();
-    //left_factoring();
+    eliminate_LR();
+    left_factoring();
     productions = adjust_production_set();
     make_first_follow();
 

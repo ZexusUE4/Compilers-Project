@@ -1,5 +1,6 @@
 # METHOD_BODY = {new_scope} STATEMENT_LIST {exit_scope}
 # ASSIGNMENT = 'id' {check_id_declared} 'assign' EXPRESSION ';' {assignment}
+# ASSIGNMENT_ = 'id' {check_id_declared} 'assign' EXPRESSION {assignment_}
 # EXPRESSION = SIMPLE_EXPRESSION {pass_type_next} EXPRESSION. {exp_typ2}
 # EXPRESSION. = \L
 # EXPRESSION. = 'relop' SIMPLE_EXPRESSION {exp_typ3}
@@ -37,4 +38,8 @@
 # TERM = 'int_v' {term_int} TERM' {term_end}
 # TERM' = \L
 # TERM' = 'mulop' FACTOR {term_max_type} TERM' {term_end}
-# WHILE = 'while' {set_loop_begin} '(' EXPRESSION ')' '{' {new_scope} STATEMENT '}' {while_end}
+# WHILE = 'while' {set_loop_begin} '(' EXPRESSION ')' '{' {new_scope} STATEMENT_LIST '}' {while_end}
+# FOR = 'for' '(' ASSIGNMENT_ ';' EXPRESSION {for_exp} ';' ASSIGNMENT_ {for_assign} ')' '{' {new_scope} STATEMENT_LIST {for_end} '}' {exit_scope}
+# STATEMENT = 'for' '(' ASSIGNMENT_ ';' EXPRESSION {for_exp} ';' ASSIGNMENT_ {for_assign} ')' '{' {new_scope} STATEMENT_LIST {for_end} '}' {exit_scope}
+# STATEMENT_LIST = 'for' '(' ASSIGNMENT_ ';' EXPRESSION {for_exp} ';' ASSIGNMENT_ {for_assign} ')' '{' {new_scope} STATEMENT_LIST {for_end} '}' {exit_scope} STATEMENT_LIST' {set_next_addr}
+# STATEMENT_LIST' = 'for' '(' ASSIGNMENT_ ';' EXPRESSION {for_exp} ';' ASSIGNMENT_ {for_assign} ')' '{' {new_scope} STATEMENT_LIST {for_end} '}' {exit_scope} STATEMENT_LIST' {set_next_addr}

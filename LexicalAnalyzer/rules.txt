@@ -7,7 +7,7 @@ int_v: digit+
 float_v: digit+ . digits ( \L | E digits)
 relop: \=\= | !\= | > | >\= | < | <\=
 assign: =
-{ if else while }
+{ if else while for }
 addop: \+ | -
 mulop: \* | /
 [; , (  ) { } ]

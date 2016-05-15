@@ -14,6 +14,8 @@ map<string,sem_function> semantic_functions::sem_map { { "new_scope", &semantic_
                          {"term_pass_next", &semantic_functions::term_pass_next}, {"term_max_type" , &semantic_functions::term_max_type},{"simple_add",&semantic_functions::simple_add},
                          {"check_id_declared", &semantic_functions::check_id_declared}, {"simple_sign_neg", &semantic_functions::simple_sign_neg}, { "factor_exp_type" , &semantic_functions::factor_exp_type},
                          {"set_next_addr", &semantic_functions::set_next_addr}, {"set_loop_begin", &semantic_functions::set_loop_begin}, {"while_end", &semantic_functions::while_end},
+                         {"for_exp", &semantic_functions::for_exp}, {"for_assign", &semantic_functions::for_assign}, {"for_end", &semantic_functions::for_end},
+                         {"assignment_", &semantic_functions::assignment_},
                         };
 
 
@@ -88,6 +90,15 @@ void semantic_functions::assignment(psymbol *p){
     cg->assign_symbol(id->get_val(),EXPRESSION->data.type);
     p->parent->data.next_addr = cg->get_program_counter();
 }
+
+/* # ASSIGNMENT_ = 'id' {check_id_declared} 'assign' EXPRESSION {assignment_} */
+void semantic_functions::assignment_(psymbol *p){
+    psymbol* id = p->prev_sibling(2);
+    psymbol* EXPRESSION = p;
+    cg->assign_symbol(id->get_val(),EXPRESSION->data.type);
+    p->parent->data.next_addr = cg->get_program_counter();
+}
+
 void semantic_functions::check_id_declared(psymbol* p)
 {
 
@@ -169,7 +180,6 @@ void semantic_functions::exp_typ3(psymbol* p)
     }
 
     p->parent->data.type = "bool";
-
     p->parent->data.falseList = makeList(cg->get_program_counter() - 1);
     p->parent->data.trueList = new vector<int>();
 
@@ -313,4 +323,28 @@ void semantic_functions::while_end(psymbol* p)
         cg->throw_error("Expression is not of type: bool ","Flow of control error !");
     }
     exit_scope(p);
+}
+
+/* # FOR = 'for' '(' ASSIGNMENT_ ';' EXPRESSION {for_exp} ';' ASSIGNMENT_ {for_assign} ')' '{' {new_scope} STATEMENT_LIST {for_end} '}' {exit_scope} */
+void semantic_functions::for_exp(psymbol* p)
+{
+    p->data.next_addr = cg->get_program_counter();
+    cg->add_instruction("goto ");
+}
+
+void semantic_functions::for_assign(psymbol* p)
+{
+    psymbol* ASSIGN1 = p->prev_sibling(4);
+    psymbol* EXP = p->prev_sibling(2);
+
+    cg->add_instruction("goto L" + cg->int_to_string(ASSIGN1->data.next_addr));
+    cg->back_patch(EXP->data.next_addr,p->data.next_addr+1);
+}
+
+void semantic_functions::for_end(psymbol* p)
+{
+    psymbol* EXP = p->prev_sibling(5);
+    cg->add_instruction("goto L"+ cg->int_to_string(EXP->data.next_addr + 1));
+    cg->back_patch(EXP->data.falseList,p->data.next_addr + 1);
+    p->parent->data.next_addr = cg->get_program_counter();
 }

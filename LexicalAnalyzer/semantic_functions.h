@@ -47,4 +47,8 @@ public:
     static void set_next_addr(psymbol* p);
     static void set_loop_begin(psymbol* p);
     static void while_end(psymbol* p);
+    static void for_exp(psymbol* p);
+    static void for_assign(psymbol* p);
+    static void for_end(psymbol* p);
+    static void assignment_(psymbol *p);
 };

@@ -1,33 +1,15 @@
 int x;
-x = 10;
-int ind;
-while(x == 10)
+for( x = 0; x < 10; x = x + 1)
 {
-    while(x == 10)
-    {
-        while(x == 10)
-        {
-            while(x == 10)
-            {
-                while(x == 10)
-                {
-                    while(x == 10)
-                    {
-                        ind = ind + 1;
-                        if( ind == 127)
-                        {
-                            x = 127;
-                        }
-                        else
-                        {
-                            x = 10;
-                        }
-                    }      
-                }      
-            }      
-        }
-    }  
+  int y;
+  for(y = 20;y< 100; y = y + 10)
+  {
+     int z;
+     while( z > 10)
+     {
+        z = z + 1;
+     }
+  }
 }
- 
-int y;
-y = 100;
+int z;
+z = 10;
