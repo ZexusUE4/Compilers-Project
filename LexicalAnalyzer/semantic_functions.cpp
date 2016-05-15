@@ -328,8 +328,15 @@ void semantic_functions::while_end(psymbol* p)
 /* # FOR = 'for' '(' ASSIGNMENT_ ';' EXPRESSION {for_exp} ';' ASSIGNMENT_ {for_assign} ')' '{' {new_scope} STATEMENT_LIST {for_end} '}' {exit_scope} */
 void semantic_functions::for_exp(psymbol* p)
 {
-    p->data.next_addr = cg->get_program_counter();
-    cg->add_instruction("goto ");
+    if(p->data.type == "bool")
+    {
+        p->data.next_addr = cg->get_program_counter();
+        cg->add_instruction("goto ");
+    }
+    else
+    {
+        cg->throw_error("Expression is not of type: bool ","Flow of control error !");
+    }
 }
 
 void semantic_functions::for_assign(psymbol* p)

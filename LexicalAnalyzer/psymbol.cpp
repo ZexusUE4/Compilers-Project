@@ -82,7 +82,6 @@ psymbol* psymbol::next_sibling(int distance)
         i++;
     }
 
-    cout << this->parent->get_val() << " " << p_childs.size() << endl;
     while(distance){
         i--;
         distance--;
